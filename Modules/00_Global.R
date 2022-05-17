@@ -5,7 +5,13 @@ NonReqField <- function(x) {return(HTML(paste0(x, spcs(3))))}
 
 
 is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '') {return(TRUE)} else {return(FALSE)}}}
+are.null.empty <- function(x) {
+  for (i in 1:length(x)) {
+    if (is.null.empty(x[i])) {return(TRUE)}}
+  return(FALSE)
+}
 
+unitsOpt <- c(Mg = 1e6, kg = 1e3, g = 1e1, mg =	1e-3, ug = 1e-6)
 
 title <- tags$div(HTML(
   '<table text-align=left cellspacing=-10 cellPadding=30>

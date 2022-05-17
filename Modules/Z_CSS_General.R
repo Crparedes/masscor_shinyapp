@@ -2,6 +2,10 @@ headTags1 <- tags$li(
   tags$script(HTML("$('body').addClass('fixed');")),
   tags$head(
     tags$style(type = "text/css", "body {padding-top: 60px; padding-bottom: 60px; background-color: #efefef;}"),
+    tags$style(HTML("
+      .radio-inline, .checkbox-inline {
+        padding-left: 40px;
+      }")),
     # Links
     tags$style(HTML('
       a {

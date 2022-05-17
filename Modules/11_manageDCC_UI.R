@@ -20,14 +20,13 @@ manageDCC.UI <- function(id) {
             6,
             box(
               width = 12, title = h4('NAWI DCC main components:'), tags$hr(), status = 'primary',
-              div(class = "tabBox2", 
+              div(class = "tabBox2", style = 'font-size:13px;',
                 tabBox(
                   id = ns('createDCC.TB'), title = NULL, width = 12, side = 'left', 
                   tabPanel(
                     title = 'Administrative data', tags$br(),
                     tags$div(
-                      #id = "inlineBOT", 
-                      style = 'font-size:13px; width: 100%',
+                      style = 'width: 100%',
                       textInput(inputId = ns('institution'), label = ReqField('Calibrating laboratory'), width = '100%'),
                       splitLayout(cellWidths = c('30%', '70%'),
                         checkboxInput(inputId = ns('bolLogo'), label = 'Include institution logo', value = FALSE),
@@ -48,11 +47,24 @@ manageDCC.UI <- function(id) {
                   tabPanel(
                     title = 'Measurement results',
                     tags$br(),
+                    tags$div(id = "inlineBOT", #style = 'font-size:12px',
+                             splitLayout(#cellWidths = c("75%", "25%"),
+                                         numericInput(ns('d'), label = ReqField('Balance scale division:'), min = 0, value = NULL),
+                                         radioButtons(ns('d_units'), label = HTML(spcs(3)), choices = names(unitsOpt), selected = 'mg', inline = TRUE))),
+                    
+                    tags$br(),
+                    tags$b('Indication error'), tags$br(),
+                    tags$div(id = "inline", 
+                             sliderInput(ns('IndErrorPoints'), label = ReqField('Number of calibration points'), min = 2, max = 20, value = 11, step = 1)),
+                    rHandsontableOutput(ns("HT.indicationError")), tags$br(),
+                    tags$b('Repeatability test results'), tags$br(),
+                    rHandsontableOutput(ns("HT.rep"), width = '100%'), tags$br(),
+                    tags$b('Excentricity test results'), tags$br(),
+                    rHandsontableOutput(ns("HT.eccen"), width = '100%'),
                     tags$br(),
                     splitLayout(
                       actionButton(inputId = ns('Go2Comments'), label = tags$b('Go to comments'), width = '100%'),
-                      actionButton(inputId = ns('FinishNAWIDCC1'), label = tags$b('Finish NAWI DCC'), width = '100%')),
-                    tags$br()
+                      actionButton(inputId = ns('FinishNAWIDCC1'), label = tags$b('Finish NAWI DCC'), width = '100%'))
                   ),
                   
                   tabPanel(
@@ -75,39 +87,4 @@ manageDCC.UI <- function(id) {
     column(1,tags$br()), 
     column(12, tags$hr(), tags$hr(), tags$hr())
   )
-}
-
-# Cargar im'agenes png https://www.rdocumentation.org/packages/png/versions/0.1-7/topics/readPNG
-manageDCC.Server <- function(input, output, session) {
-  observeEvent(input$brwzInsideModule, browser())
-  
-  BoleanIncompleteAdminDat <- reactive(all(is.null.empty(input$institution)))
-  BoleanIncompleteMeasurRes <- reactive(all(is.null.empty(input$calib)))
-  observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
-               if (BoleanIncompleteAdminDat()) {
-                 showNotification('Please complete the required fields of administrative data', duration = 3, type = 'error')
-               } else {
-                 updateTabItems(inputId = 'createDCC.TB', selected = 'Measurement results')
-               })
-  observeEvent(input$createDCC.TB, ignoreInit = TRUE,
-               if (BoleanIncompleteAdminDat()) {
-                 showNotification('Please complete the required fields of administrative data', duration = 3, type = 'error')
-                 updateTabItems(inputId = 'createDCC.TB', selected = 'Administrative data')
-               } else {
-                 if (BoleanIncompleteMeasurRes() && input$createDCC.TB == 'Comments') {
-                   showNotification('Please complete the required fields of measurement results', duration = 3, type = 'error')
-                   updateTabItems(inputId = 'createDCC.TB', selected = 'Measurement results')
-                 }
-               })             
-  
-  observeEvent(input$Go2Comments, ignoreInit = TRUE, updateTabItems(inputId = 'createDCC.TB', selected = 'Comments'))
-  
-  observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
-               if (is.null.empty(input$institution)) {
-                 showNotification('Please complete the required fields of measurement results', duration = 3, type = 'error')
-               } else {
-                 updateTabItems(inputId = 'createDCC.TB', selected = 'Measurement results')
-               })
-
-    # includeMarkdown("about.md")
 }

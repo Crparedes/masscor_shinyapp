@@ -1,4 +1,5 @@
 rm(list=ls())
+gc()
 library(shiny)
 library(shinythemes)
 library(shinydashboard)
@@ -30,7 +31,6 @@ ui <- fluidPage(
     tabPanel(title = HTML('Air buoyancy <br>', spcs(6), 'correction factors'), icon = icon('leaf'), tags$hr(), conventionalMass.UI(id = 'buoyancy')),
     headTags1, headTags2, headTags3 # mainly css code
   )
-  
 )
 
 server <- function(input, output, session, devMode = TRUE) {
