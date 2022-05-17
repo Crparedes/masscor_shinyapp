@@ -12,8 +12,15 @@ headTags1 <- tags$li(
       a:hover, a:focus {
         color: #000000;
         text-decoration: underline;
-      }')),
-    
+      }
+    ')),
+    # # fluidrows
+    # tags$style(HTML('
+    # .tab-content>.active {
+    #   display: block;
+    #   background-color: #efefef;
+    # }
+    # ')),
     # 
     tags$style(HTML(
       '.shiny-notification {position:fixed; top: calc(50% - 150px); left: calc(50% - 150px); 

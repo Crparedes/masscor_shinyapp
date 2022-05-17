@@ -3,6 +3,10 @@ spcs <- function(n) {return(paste0(rep('&nbsp;', n), collapse = ''))}
 ReqField <- function(x) {return(HTML(paste0(x, '<font color=\"#FF0000\">*</font>', spcs(3))))}
 NonReqField <- function(x) {return(HTML(paste0(x, spcs(3))))}
 
+
+is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '') {return(TRUE)} else {return(FALSE)}}}
+
+
 title <- tags$div(HTML(
   '<table text-align=left cellspacing=-10 cellPadding=30>
   <tr><th rowspan = 2>', spcs(5),

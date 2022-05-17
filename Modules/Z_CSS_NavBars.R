@@ -13,7 +13,7 @@ headTags2 <- tags$li(
       }
       .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
         color: #dddddd;
-        background-color: #243341;
+        background-color: #´;
         font-size:15px;
         font-weight: bold;
         vertical-align: bottom;
@@ -37,7 +37,13 @@ headTags2 <- tags$li(
         line-height: 21px;
         height: 60px;
       }')),
-    
+    # Navigation Bar:
+    tags$style(HTML('
+    .btn-default {
+        color: #ffffff;
+        background-color: #59748f;
+        border-color: #59748f;
+    }')),
     #Second navigation bar
     tags$style(
       type = "text/css", 
