@@ -47,24 +47,40 @@ manageDCC.UI <- function(id) {
                   tabPanel(
                     title = 'Measurement results',
                     tags$br(),
-                    tags$div(id = "inlineBOT", #style = 'font-size:12px',
-                             splitLayout(#cellWidths = c("75%", "25%"),
-                                         numericInput(ns('d'), label = ReqField('Balance scale division:'), min = 0, value = NULL),
-                                         radioButtons(ns('d_units'), label = HTML(spcs(3)), choices = names(unitsOpt), selected = 'mg', inline = TRUE))),
-                    
-                    tags$br(),
-                    tags$b('Indication error'), tags$br(),
+                    tags$div(id = "inline", #style = 'font-size:12px',
+                             fluidRow(
+                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('d'), label = ReqField('Balance readability:'), min = 0, value = NULL, step = 0.01)))),
+                               column(6, radioButtons(ns('d_units'), label = NULL, choices = names(unitsOpt), selected = 'mg', inline = TRUE)))),
+                    tags$hr(),
+                    h5(tags$b('Indication error results')), 
                     tags$div(id = "inline", 
-                             sliderInput(ns('IndErrorPoints'), label = ReqField('Number of calibration points'), min = 2, max = 20, value = 11, step = 1)),
-                    rHandsontableOutput(ns("HT.indicationError")), tags$br(),
-                    tags$b('Repeatability test results'), tags$br(),
-                    rHandsontableOutput(ns("HT.rep"), width = '100%'), tags$br(),
-                    tags$b('Excentricity test results'), tags$br(),
-                    rHandsontableOutput(ns("HT.eccen"), width = '100%'),
+                             fluidRow(
+                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('IndErrorPoints'), label = ReqField('No. of calibration points'), min = 2, max = 20, value = 10, step = 1, width = '100%')))),
+                               column(6, '(Set this value before entering data in the table)'))),
+                    tags$br(),
+                    rHandsontableOutput(ns("HT.indicationError")), 
+                    tags$hr(),
+                    h5(tags$b('Repeatability test results')),
+                    tags$div(id = "inline", 
+                             fluidRow(
+                               column(6, fluidRow(column(11, offset = 1, 
+                                                         numericInput(ns('ReapTestPoints'), label = ReqField('No. of repeatiility test loads'), min = 1, max = 10, value = 2, step = 1),
+                                                         numericInput(ns('ReapTestMeaPerPoints'), label = ReqField('No. of indications per load'), min = 3, max = 20, value = 10, step = 1)))),
+                               #radioButtons(ns('ReapTestApproach'), label = ReqField('Number of repeatiility test points'), min = 1, max = 10, value = 10, step = 1),
+                               column(6, '(Set these values before entering data in the table)'))), 
+                    tags$br(),
+                    rHandsontableOutput(ns("HT.repeatability"), width = '100%'),
+                    tags$div(id = "inline", radioButtons(ns('repUnits'), label = 'Units of values in table', choices = names(unitsOpt), selected = 'g', inline = TRUE)),
+                    tags$hr(),
+                    h5(tags$b('Excentricity test results')), 
+                    fluidRow(
+                      column(3, offset = 1, div(img(src = "eccen.png", width = '90%'), style = "text-align: center;")),
+                      column(9, rHandsontableOutput(ns("HT.eccen"), width = '100%'))),
                     tags$br(),
                     splitLayout(
                       actionButton(inputId = ns('Go2Comments'), label = tags$b('Go to comments'), width = '100%'),
-                      actionButton(inputId = ns('FinishNAWIDCC1'), label = tags$b('Finish NAWI DCC'), width = '100%'))
+                      actionButton(inputId = ns('FinishNAWIDCC1'), label = tags$b('Finish NAWI DCC'), width = '100%')),
+                    tags$br(), HTML(spcs(1))
                   ),
                   
                   tabPanel(
@@ -74,7 +90,7 @@ manageDCC.UI <- function(id) {
                     splitLayout(
                       HTML(spcs(1)),
                       actionButton(inputId = ns('FinishNAWIDCC2'), label = tags$b('Finish NAWI DCC'), width = '100%')),
-                    tags$br()
+                    tags$br(), HTML(spcs(1))
                   )
                 )),
               tags$br()

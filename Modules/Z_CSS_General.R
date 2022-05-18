@@ -18,6 +18,15 @@ headTags1 <- tags$li(
         text-decoration: underline;
       }
     ')),
+    # numeric inputs
+    tags$style(HTML("
+      input[type=\"number\"] {
+        height: 15px;
+        width: 80px;
+        font-size: 12px;
+      }
+    
+    ")),
     # # fluidrows
     # tags$style(HTML('
     # .tab-content>.active {
