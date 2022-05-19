@@ -4,7 +4,7 @@ ReqField <- function(x) {return(HTML(paste0(x, '<font color=\"#FF0000\">*</font>
 NonReqField <- function(x) {return(HTML(paste0(x, spcs(3))))}
 
 
-is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '') {return(TRUE)} else {return(FALSE)}}}
+is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '' || any(is.na(x))) {return(TRUE)} else {return(FALSE)}}}
 are.null.empty <- function(x) {
   for (i in 1:length(x)) {
     if (is.null.empty(x[i])) {return(TRUE)}}
@@ -32,5 +32,21 @@ Information <- h5(
   "The work was presented at the ", tags$a(href = "https://URL.sin.asignar/", "XXX XXXX Anual Conference on XXXXX XXXX (20XX)", target = "_blank"),
   "by", tags$a(href = "https://www.researchgate.net/profile/Cristhian-Paredes-2", "Cristhian Paredes.", target = "_blank"))
   
+
+HOT2R <- function(x) {
+  rows <- length(x$data)
+  cols <- length(x$data[[1]])
+  extracted <- data.frame(matrix(nrow = rows, ncol = cols))
+  for (i in 1:rows) {
+    for (j in 1:cols) {
+      extracted[i, j] <- ifelse(is.null(x$data[[i]][[j]]), NA, x$data[[i]][[j]])
+    }
+  }
+  colnames(extracted) <- unlist(x$params$colHeaders)
+  rownames(extracted) <- unlist(x$params$rowHeaders)
+  return(extracted)
+}
+
+#HOT2R(input$HT.eccen)
 
 #,https://cran.r-project.org/web/packages/masscor/index.html")

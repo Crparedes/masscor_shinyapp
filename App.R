@@ -1,5 +1,6 @@
-rm(list=ls())
-gc()
+rm(list = ls())   # Delete all objects in workspace
+gc()            # Garbage collector
+
 library(shiny)
 library(shinythemes)
 library(shinydashboard)
@@ -7,6 +8,7 @@ library(shinyWidgets)
 library(ggplot2) #Grammar of graphics
 library(ggfortify)
 library(rhandsontable)
+library(data.table)
 library(masscor)
 library(png)
 # icon("flask")

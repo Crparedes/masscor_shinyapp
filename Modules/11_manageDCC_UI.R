@@ -6,7 +6,7 @@ manageDCC.UI <- function(id) {
     h4('Create a new masscor NAWI DCC or upload a formely created one.'), tags$br(),
     actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     tabBox(
-      id = ns('manageDCC.TB'), title = NULL, width = 12, side = 'left',
+      id = ns('manageDCC.TB'), title = NULL, width = 12, side = 'left', selected = 'Create new masscor NAWI DCC',
       tabPanel(
         title = 'Upload a masscor NAWI DCC',  
         fluidRow(column(
@@ -32,7 +32,7 @@ manageDCC.UI <- function(id) {
                         checkboxInput(inputId = ns('bolLogo'), label = 'Include institution logo', value = FALSE),
                         conditionalPanel(
                           'input.bolLogo', ns = ns,
-                          fileInput(ns('InstitutLogo'), label = 'Choose institutional logo (.png):', multiple = FALSE, accept = '.png', width = '100%'))),
+                          tags$div(id = "inline", fileInput(ns('InstitutLogo'), label = NULL, multiple = FALSE, accept = '.png', width = '100%', placeholder = 'Only PNG allowed')))),
                       textInput(inputId = ns('accreditation'), label = ReqField('Accredited by'), width = '100%'),
                       textInput(inputId = ns('balanceID'), label = ReqField('NAWI name, description'), width = '100%'),
                       textInput(inputId = ns('serial'), label = ReqField('NAWI serial'), width = '100%'),
@@ -46,21 +46,14 @@ manageDCC.UI <- function(id) {
                   
                   tabPanel(
                     title = 'Measurement results',
-                    tags$br(),
+                    tags$hr(),
+                    h5(tags$b('Balance readability')),
                     tags$div(id = "inline", #style = 'font-size:12px',
                              fluidRow(
-                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('d'), label = ReqField('Balance readability:'), min = 0, value = NULL, step = 0.01)))),
+                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('d'), label = ReqField('Smallest scale division:'), min = 0, value = NULL, step = 0.01)))),
                                column(6, radioButtons(ns('d_units'), label = NULL, choices = names(unitsOpt), selected = 'mg', inline = TRUE)))),
-                    tags$hr(),
-                    h5(tags$b('Indication error results')), 
-                    tags$div(id = "inline", 
-                             fluidRow(
-                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('IndErrorPoints'), label = ReqField('No. of calibration points'), min = 2, max = 20, value = 10, step = 1, width = '100%')))),
-                               column(6, '(Set this value before entering data in the table)'))),
-                    tags$br(),
-                    rHandsontableOutput(ns("HT.indicationError")), 
-                    tags$hr(),
-                    h5(tags$b('Repeatability test results')),
+                    tags$hr(), tags$hr(),
+                    h5(tags$b('Repeatability test')),
                     tags$div(id = "inline", 
                              fluidRow(
                                column(6, fluidRow(column(11, offset = 1, 
@@ -71,12 +64,26 @@ manageDCC.UI <- function(id) {
                     tags$br(),
                     rHandsontableOutput(ns("HT.repeatability"), width = '100%'),
                     tags$div(id = "inline", radioButtons(ns('repUnits'), label = 'Units of values in table', choices = names(unitsOpt), selected = 'g', inline = TRUE)),
-                    tags$hr(),
-                    h5(tags$b('Excentricity test results')), 
+                    tags$hr(), tags$hr(),
+                    h5(tags$b('Excentricity test')), 
                     fluidRow(
                       column(3, offset = 1, div(img(src = "eccen.png", width = '90%'), style = "text-align: center;")),
-                      column(9, rHandsontableOutput(ns("HT.eccen"), width = '100%'))),
+                      column(7, offset = 1, 
+                             rHandsontableOutput(ns("HT.eccen"), width = '100%'),
+                             tags$div(id = "inline", radioButtons(ns('eccenUnits'), label = 'Units of values in table', choices = names(unitsOpt), selected = 'g', inline = TRUE)))),
+                    tags$hr(), tags$hr(),
+                    h5(tags$b('Indication error test')), 
+                    tags$div(id = "inline", 
+                             fluidRow(
+                               column(6, fluidRow(column(11, offset = 1, numericInput(ns('IndErrorPoints'), label = ReqField('No. of calibration points'), min = 2, max = 20, value = 10, step = 1, width = '100%')))),
+                               column(6, '(Set this value before entering data in the table)'))),
                     tags$br(),
+                    rHandsontableOutput(ns("HT.indicationError")),
+                    tags$div(id = "inline", numericInput(ns('IndErrorK'), label = ReqField('Expanded uncertainty coverage factor'), min = 1, max = 10, value = 2, step = 1)),
+                    tags$hr(), tags$hr(),
+                    h5(tags$b('Environmental conditions during calibration')), 
+                    
+                    tags$hr(), tags$hr(),
                     splitLayout(
                       actionButton(inputId = ns('Go2Comments'), label = tags$b('Go to comments'), width = '100%'),
                       actionButton(inputId = ns('FinishNAWIDCC1'), label = tags$b('Finish NAWI DCC'), width = '100%')),
