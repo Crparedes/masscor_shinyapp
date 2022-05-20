@@ -4,7 +4,7 @@ ReqField <- function(x) {return(HTML(paste0(x, '<font color=\"#FF0000\">*</font>
 NonReqField <- function(x) {return(HTML(paste0(x, spcs(3))))}
 
 
-is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '' || any(is.na(x))) {return(TRUE)} else {return(FALSE)}}}
+is.null.empty <- function(x) {if (is.null(x)) {return(TRUE)} else {if (length(x) == 0 || x == '' || any(is.na(unlist(x)))) {return(TRUE)} else {return(FALSE)}}}
 are.null.empty <- function(x) {
   for (i in 1:length(x)) {
     if (is.null.empty(x[i])) {return(TRUE)}}
@@ -12,6 +12,10 @@ are.null.empty <- function(x) {
 }
 
 unitsOpt <- c(kg = 1e3, g = 1e1, mg =	1e-3, ug = 1e-6)
+tempeAllowedUnits <- c('ªC' = 'deg.C', K ='K')
+rHumiAllowedUnits <- c(Percentaje = '%', Fraction = 'frac')
+bPresAllowedUnits <- c('Pa', 'hPa', 'kPa', 'mmHg')
+
 
 title <- tags$div(HTML(
   '<table text-align=left cellspacing=-10 cellPadding=30>
@@ -34,6 +38,7 @@ Information <- h5(
   
 
 HOT2R <- function(x) {
+  if (is.null(x)) return(NA)
   rows <- length(x$data)
   cols <- length(x$data[[1]])
   extracted <- data.frame(matrix(nrow = rows, ncol = cols))
@@ -47,6 +52,6 @@ HOT2R <- function(x) {
   return(extracted)
 }
 
-#HOT2R(input$HT.eccen)
+#x <- input$HT.eccen
 
 #,https://cran.r-project.org/web/packages/masscor/index.html")

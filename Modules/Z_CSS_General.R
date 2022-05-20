@@ -25,7 +25,25 @@ headTags1 <- tags$li(
         width: 80px;
         font-size: 12px;
       }
-    
+       input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+        }
+      .form-control {
+        height: 20px;
+        padding: 10px 1px 10px 10px;
+        font-size: 13px;
+        line-height: 1.42857143;
+        color: #2c3e50;
+        background-color: #ffffff;
+      }
+      .btn-file {
+        height: 22px;
+        padding: 3px 3px;
+        font-size: 12px;
+        background-color:black; 
+      }
     ")),
     # # fluidrows
     # tags$style(HTML('
