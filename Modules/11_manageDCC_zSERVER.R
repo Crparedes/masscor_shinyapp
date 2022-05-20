@@ -131,8 +131,11 @@ manageDCC.Server <- function(input, output, session) {
     
     add.info <- reactive(list(
       Logo = tryCatch(logo(), error = function(x) return(NA)),
+      ResponsiblePerson = input$respPerson,
+      CalibrationPlace = input$calPlace,
       CompleteRepeatability = HOT2R(input$HT.repeatability),
-      CompleteEccentricity = HOT2R(input$HT.eccen)
+      CompleteEccentricity = HOT2R(input$HT.eccen),
+      Comments = list(Com1 = input$Comments1, Com2 = input$Comments2, Com3 = input$Comments3)
     ))
     
     NAWIDCC <- eventReactive(
@@ -161,8 +164,8 @@ manageDCC.Server <- function(input, output, session) {
   downloadDCC1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
     splitLayout(
-      downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"),
-      downloadButton(session$ns('DwnlPDFFile1'), 'Download only human readable file (PDF)',  style = "width:100%;")))
+      ifelse(input$Source == 'daCapo', downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"), HTML(spcs(1))),
+      downloadButton(session$ns('DwnlPDFFile1'), 'Download human readable file (PDF)',  style = "width:100%;")))
   
   output$DwnlDCCFile1 <- downloadHandler(
     filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
@@ -184,7 +187,7 @@ manageDCC.Server <- function(input, output, session) {
     },
     contentType = NULL)
     
-  output$downloadDCC1 <- renderUI(ifelse(input$Source == 'daCapo', downloadDCC1(), NULL))
+  output$downloadDCC1 <- renderUI(downloadDCC1())
   
   
   output$primitive <- renderPrint(print(NAWIDCC(), complete = TRUE))
