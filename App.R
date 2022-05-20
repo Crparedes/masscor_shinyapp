@@ -23,14 +23,14 @@ ui <- fluidPage(
   navbarPage(
     title = title, windowTitle = 'masscor Graphical User Interface', id = 'MainNavTabs',# selected = 'Home',
     theme = shinytheme("flatly"), position = 'fixed-top', collapsible = TRUE, lang = 'en',
-    tabPanel(title = HTML('Home<br>&nbsp;'), icon = icon('compass'), tags$hr(), homeMasscor.UI(id = 'homeMasscor'), 
+    tabPanel(title = HTML('Home<br>&nbsp;'), icon = icon('compass'), tags$hr(), tags$hr(), homeMasscor.UI(id = 'homeMasscor'), 
              #actionButton(inputId = 'brwz1', label = tags$b('Browser()')) #Eliminar esta linea
              ),
-    tabPanel(title = HTML('Create/upload <br>', spcs(7), 'NAWI DCC'), icon = icon('certificate'), tags$hr(), manageDCC.UI(id = 'manageDCC'), 
+    tabPanel(title = HTML('Create/upload <br>', spcs(7), 'NAWI DCC'), icon = icon('certificate'), tags$hr(), tags$hr(), manageDCC.UI(id = 'manageDCC'), 
              #actionButton(inputId = 'brwz2', label = tags$b('Browser()')) #Eliminar esta linea
              ),
-    tabPanel(title = HTML('Conventional <br>', spcs(7), 'mass correction'), icon = icon('ethernet'), tags$hr(), conventionalMass.UI(id = 'conventionalMass')),
-    tabPanel(title = HTML('Air buoyancy <br>', spcs(6), 'correction factors'), icon = icon('leaf'), tags$hr(), conventionalMass.UI(id = 'buoyancy')),
+    tabPanel(title = HTML('Conventional <br>', spcs(7), 'mass correction'), icon = icon('ethernet'), tags$hr(), tags$hr(), conventionalMass.UI(id = 'conventionalMass')),
+    tabPanel(title = HTML('Air buoyancy <br>', spcs(6), 'correction factors'), icon = icon('leaf'), tags$hr(), tags$hr(), buoyancyCorrections.UI(id = 'MABC')),
     headTags1, headTags2, headTags3 # mainly css code
   )
 )
@@ -42,6 +42,9 @@ server <- function(input, output, session, devMode = TRUE) {
   #observeEvent(input$Start1, updateTabItems(inputId = 'tabs', selected = 'MRC_DisTab'))
   
   ImportedCreated.NAWIDCC <- callModule(module = manageDCC.Server, id = 'manageDCC')
+  
+  callModule(module = conventionalMass.Server, id = 'conventionalMass', NAWIDCC = ImportedCreated.NAWIDCC)
+  callModule(module = buoyancyCorrections.Server, id = 'MABC', NAWIDCC = ImportedCreated.NAWIDCC)
   
 }
 

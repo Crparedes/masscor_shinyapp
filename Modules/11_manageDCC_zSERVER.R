@@ -5,10 +5,10 @@ manageDCC.Server <- function(input, output, session) {
   
   # Navigation between tabs
   {
-  BoleanIncompleteAdminDat <- reactive(FALSE)
-    #are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
-  BoleanIncompleteMeasurRes <- reactive(FALSE)
-    #are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Tempe, input$bPres, input$rHumi)))
+  BoleanIncompleteAdminDat <- reactive(#FALSE)
+    are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
+  BoleanIncompleteMeasurRes <- reactive(#FALSE)
+    are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Tempe, input$bPres, input$rHumi)))
   
   observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
                if (BoleanIncompleteAdminDat()) {
@@ -164,7 +164,7 @@ manageDCC.Server <- function(input, output, session) {
   downloadDCC1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
     splitLayout(
-      ifelse(input$Source == 'daCapo', downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"), HTML(spcs(1))),
+      ifelse(input$SourceOption == 'daCapo', downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"), HTML(spcs(1))),
       downloadButton(session$ns('DwnlPDFFile1'), 'Download human readable file (PDF)',  style = "width:100%;")))
   
   output$DwnlDCCFile1 <- downloadHandler(

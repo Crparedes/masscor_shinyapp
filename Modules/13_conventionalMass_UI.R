@@ -1,10 +1,10 @@
 conventionalMass.UI <- function(id) {
   ns <- NS(id)
-  box(title = div(style = 'font-size:20px', tags$b('Create masscor DCC')), width = 12, status = 'primary', collapsible = TRUE, collapsed = FALSE
-      
-      )
-}
-
-conventionalMass.Server <- function(input, output, session) {
-
+  column( # Revisar https://www.oiml.org/en/files/pdf_d/d028-e04.pdf
+    width = 10, offset = 1,
+    h3(tags$b('Conventional value of the result of weighing in air using the masscor NAWI DCC')),
+    
+    
+    
+    )
 }

@@ -4,7 +4,7 @@ manageDCC.UI <- function(id) {
     width = 10, offset = 1,
     h3(tags$b('Digital Calibration Certificates for Non-Automatic Weighing Instruments with the R package masscor')),
     h4('Create a new masscor NAWI DCC or upload a formely created one.'), tags$br(),
-    actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
+    #actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     tags$div(id = "inline", radioButtons(ns('SourceOption'), label = 'Which action will you perform?', 
                                          choices = list('Create new masscor NAWI DCC' = 'daCapo', "Upload a masscor NAWI DCC" = 'file'), 
                                          selected = 'daCapo', inline = TRUE)),
