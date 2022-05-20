@@ -108,18 +108,24 @@ manageDCC.Server <- function(input, output, session) {
   NAWI.DCC.Completed <- reactiveVal(0)
   
   # When user tries to finish or update the DCC
-  output$FinishNAWIDCC1 <- renderUI(actionButton(
+  {output$FinishNAWIDCC1 <- renderUI(actionButton(
     inputId = session$ns('FinishNAWIDCC1'), label = tags$b(ifelse(NAWI.DCC.Completed() == 0, 'Finish NAWI DCC', 'Update NAWI DCC')), width = '100%'))
   output$FinishNAWIDCC2 <- renderUI(actionButton(
     inputId = session$ns('FinishNAWIDCC2'), label = tags$b(ifelse(NAWI.DCC.Completed() == 0, 'Finish NAWI DCC', 'Update NAWI DCC')), width = '100%'))
-  observeEvent(input$FinishNAWIDCC1,
-               if (BoleanIncompleteMeasurRes()) {
-                 showNotification('NAWI DCC information is missing, please fill in all the required fields.', duration = 6, type = 'error')
-               } else {
-                 NAWI.DCC.Completed(NAWI.DCC.Completed() + 1)
-               })
-  observeEvent(input$FinishNAWIDCC2, NAWI.DCC.Completed(NAWI.DCC.Completed() + 1)) 
-               
+  output$FinishNAWIDCC3 <- renderUI(return(actionButton(inputId = session$ns('FinishNAWIDCC3'), label = tags$b('Upload selected NAWI DCC'), width = '50%')))
+
+  observeEvent(
+    input$FinishNAWIDCC1,
+    if (BoleanIncompleteMeasurRes()) {
+      showNotification('NAWI DCC information is missing, please fill in all the required fields.', duration = 6, type = 'error')
+    } else {
+      NAWI.DCC.Completed(NAWI.DCC.Completed() + 1)
+    })
+  observeEvent(input$FinishNAWIDCC2, NAWI.DCC.Completed(NAWI.DCC.Completed() + 1))
+  observeEvent(input$FinishNAWIDCC2, NAWI.DCC.Completed(NAWI.DCC.Completed() + 1))
+  observeEvent(input$FinishNAWIDCC3, NAWI.DCC.Completed(NAWI.DCC.Completed() + 1))}
+
+  # DCC creation
   {
     logo <- reactive(readPNG(source = input$InstitutLogo$datapath))
     
@@ -128,53 +134,60 @@ manageDCC.Server <- function(input, output, session) {
       CompleteRepeatability = HOT2R(input$HT.repeatability),
       CompleteEccentricity = HOT2R(input$HT.eccen)
     ))
-    DCC <- eventReactive(
+    
+    NAWIDCC <- eventReactive(
       eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE, 
       valueExpr = {
-        calibCert(institution = input$institution, accreditation = input$accreditation, date = input$date,
-                  balanceID = input$balanceID, serial = input$serial, certificate = input$certificate, 
-                  d = input$d, d.units = input$d.units, 
-                  indError = data.frame(t(HOT2R(input$HT.indicationError)[, -1])), indError.units = HOT2R(input$HT.indicationError)[, 1], 
-                  expanded = TRUE, k = input$IndErrorK, traceability = input$traceability, classSTD = input$classSTD,
-                  rep = SummarizeRepInput(HOT2R(input$HT.repeatability)), rep.units = rep(input$rep.units, 2),
-                  eccen = SummarizeEccenInput(HOT2R(input$HT.eccen)), eccen.units = rep(input$eccen.units, 2), 
-                  Temp = input$Temp, p = input$bPres, h = input$rHumi, 
-                  unitsENV = c(input$TempUnits, input$bPresUnits, input$rHumiUnits),
-                  add.info = add.info()
-                  )
-    })
-    
-    downloadDCC1 <- eventReactive(
-      eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
-      splitLayout(
-        downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"),
-        downloadButton(session$ns('DwnlPDFFile1'), 'Download only human readable file (PDF)',  style = "width:100%;")))
-    
-    output$DwnlDCCFile1 <- downloadHandler(
-      filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
-      content = function(file) {saveRDS(DCC(), file = file)}, contentType = NULL)
-    
-    # https://stackoverflow.com/questions/35800883/using-image-in-r-markdown-report-downloaded-from-shiny-app
-    output$DwnlPDFFile1 <- downloadHandler(
-      filename = function() {paste0("AnalogCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".pdf")}, 
-      content = function(file) {
-        src <- normalizePath('report.rmd')
-        src2 <- normalizePath('smiley.png')
-        owd <- setwd(tempdir())
-        on.exit(setwd(owd))
-        file.copy(src, 'report.rmd')
-        file.copy(src2, 'smiley.png') #NEW
-        library(rmarkdown)
-        out <- render('report.rmd',pdf_document())
-        file.rename(out, file)
-      },
-      #function(file) {saveRDS(DCC(), file = file)}
-      contentType = NULL)
-      
-    output$downloadDCC1 <- renderUI(downloadDCC1())
-    
-    output$primitive <- renderPrint(print(DCC(), complete = TRUE))
+        if (input$SourceOption == "daCapo") {return(
+          calibCert(institution = input$institution, accreditation = input$accreditation, date = input$date,
+                    balanceID = input$balanceID, serial = input$serial, certificate = input$certificate, 
+                    d = input$d, d.units = input$d.units, 
+                    indError = data.frame(t(HOT2R(input$HT.indicationError)[, -1])), indError.units = HOT2R(input$HT.indicationError)[, 1], 
+                    expanded = TRUE, k = input$IndErrorK, traceability = input$traceability, classSTD = input$classSTD,
+                    rep = SummarizeRepInput(HOT2R(input$HT.repeatability)), rep.units = rep(input$rep.units, 2),
+                    eccen = SummarizeEccenInput(HOT2R(input$HT.eccen)), eccen.units = rep(input$eccen.units, 2), 
+                    Temp = input$Temp, p = input$bPres, h = input$rHumi, 
+                    unitsENV = c(input$TempUnits, input$bPresUnits, input$rHumiUnits),
+                    add.info = add.info()
+          ))
+        } else {
+          dataFile <- readRDS(input$NAWI.DCC_uploaded$datapath)
+          if (class(dataFile) == 'calibCert') return(dataFile)
+        }
+      }
+    )
   }
+    
+  downloadDCC1 <- eventReactive(
+    eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
+    splitLayout(
+      downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"),
+      downloadButton(session$ns('DwnlPDFFile1'), 'Download only human readable file (PDF)',  style = "width:100%;")))
+  
+  output$DwnlDCCFile1 <- downloadHandler(
+    filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
+    content = function(file) {saveRDS(NAWIDCC(), file = file)}, contentType = NULL)
+  
+  # https://stackoverflow.com/questions/35800883/using-image-in-r-markdown-report-downloaded-from-shiny-app
+  output$DwnlPDFFile1 <- downloadHandler(
+    filename = function() {paste0("AnalogCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".pdf")}, 
+    content = function(file) {
+      src <- normalizePath('report.rmd')
+      src2 <- normalizePath('smiley.png')
+      owd <- setwd(tempdir())
+      on.exit(setwd(owd))
+      file.copy(src, 'report.rmd')
+      file.copy(src2, 'smiley.png') #NEW
+      library(rmarkdown)
+      out <- render('report.rmd',pdf_document())
+      file.rename(out, file)
+    },
+    contentType = NULL)
+    
+  output$downloadDCC1 <- renderUI(ifelse(input$Source == 'daCapo', downloadDCC1(), NULL))
   
   
+  output$primitive <- renderPrint(print(NAWIDCC(), complete = TRUE))
+  
+  return(list('NAWIDCC' = NAWIDCC))
 }
