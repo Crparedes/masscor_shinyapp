@@ -8,7 +8,7 @@ library(shinyWidgets)
 library(ggplot2) #Grammar of graphics
 library(ggfortify)
 library(rhandsontable)
-library(data.table)
+# library(data.table)
 library(masscor)
 library(png)
 # icon("flask")

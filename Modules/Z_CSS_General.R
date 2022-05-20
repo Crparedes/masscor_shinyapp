@@ -24,12 +24,14 @@ headTags1 <- tags$li(
         height: 15px;
         width: 80px;
         font-size: 12px;
-      }
-       input[type=number]::-webkit-outer-spin-button,
+      input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
               -webkit-appearance: none;
-              margin: 0;
+              margin: 4px;
         }
+      ")),
+    # other inputs
+    tags$style(HTML("
       .form-control {
         height: 20px;
         padding: 10px 1px 10px 10px;

@@ -52,6 +52,19 @@ HOT2R <- function(x) {
   return(extracted)
 }
 
+EnsureMinValue <- function(x, min) {return(max(na.omit(c(x, min))))}
+
+SummarizeRepInput <- function(x) {
+  return(as.data.frame(t(apply(x, 1, function(xi) return(c(mean(xi), sd(xi)))))))
+}
+
+SummarizeEccenInput <- function(x) {
+  return(c(mean(x[[1]]), max(abs(x[[1]][1] - x[[1]][2:5]))))
+}
+
+
 #x <- input$HT.eccen
+
+
 
 #,https://cran.r-project.org/web/packages/masscor/index.html")
