@@ -5,8 +5,8 @@ manageDCC.Server <- function(input, output, session) {
   
   # Navigation between tabs
   {
-  BoleanIncompleteAdminDat <- reactive(#FALSE)
-    are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
+  BoleanIncompleteAdminDat <- reactive(FALSE)
+    #are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
   BoleanIncompleteMeasurRes <- reactive(#FALSE)
     are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Tempe, input$bPres, input$rHumi)))
   
@@ -24,7 +24,13 @@ manageDCC.Server <- function(input, output, session) {
                    updateTabItems(inputId = 'createDCC.TB', selected = 'Measurement results')
                  }
                }) 
-  observeEvent(input$Go2Comments, ignoreInit = TRUE, updateTabItems(inputId = 'createDCC.TB', selected = 'Comments'))
+  observeEvent(input$Go2Comments, ignoreInit = TRUE,
+               if (BoleanIncompleteMeasurRes()) {
+                 showNotification('Please fill in all the required fields.', duration = 4, type = 'error')
+                 updateTabItems(inputId = 'createDCC.TB', selected = 'Measurement results')
+               } else {
+                 updateTabItems(inputId = 'createDCC.TB', selected = 'Comments')
+               })
   }
   
   ## Handsontables
@@ -32,12 +38,12 @@ manageDCC.Server <- function(input, output, session) {
   
   # Repeatability test
   {
+    frmtReap <- reactive(format(round(DummyNumber, digits = abs(floor(log10(convertMassUnitsSI(input$d, from = input$d.units, to = input$rep.units))))))[1])
     RepeatTableSize <- reactive(c(input$ReapTestPoints, input$ReapTestMeaPerPoints))
     DF.repeatability <- reactive(data.frame(matrix(nrow = EnsureMinValue(RepeatTableSize()[1], 1), ncol = EnsureMinValue(RepeatTableSize()[2], 5), 
                                                    dimnames = list(paste0('Load No. ', 1:EnsureMinValue(RepeatTableSize()[1], 1)),
                                                                    paste0('Ind.', 1:EnsureMinValue(RepeatTableSize()[2], 5))))))
-    
-    
+
     observe({
       if (!is.null(input$HT.repeatability)) {
         DF.repeatability <- HOT2R(input$HT.repeatability)
@@ -46,12 +52,14 @@ manageDCC.Server <- function(input, output, session) {
       }
       values[["DF.repeatability"]] <- DF.repeatability()
     })
-    
+
     output$HT.repeatability <- renderRHandsontable({
       DF.repeatability <- values[["DF.repeatability"]]
       if (!is.null(DF.repeatability)) {
         rhandsontable(DF.repeatability, overflow = 'visible',  fillHandle = list(direction = 'horizontal'), rowHeaderWidth = 100) %>%
-        hot_col(col = 1:EnsureMinValue(RepeatTableSize()[2], 5), type = 'numeric', allowInvalid = FALSE) %>%
+        hot_col(col = 1:EnsureMinValue(RepeatTableSize()[2], 5), type = 'numeric', allowInvalid = FALSE,
+                format = frmtReap()#as.character(format(convertMassUnitsSI(input$d, from = input$d.units, to = input$rep.units), scientific = FALSE))
+                ) %>%
         hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE) %>%
         hot_rows(fixedRowsTop = input$ReapTestPoints)
       }
@@ -60,20 +68,21 @@ manageDCC.Server <- function(input, output, session) {
   
   # Eccentricity test
   {
-    DF.eccen <- data.frame(Indication = rep(NA, 5), row.names = paste0('Position No. ', 1:5))
+    frmtEccen <- reactive(format(round(DummyNumber, digits = abs(floor(log10(convertMassUnitsSI(input$d, from = input$d.units, to = input$eccen.units))))))[1])
+    DF.eccen <- reactive(data.frame(Indication = rep(NA, 5), row.names = paste0('Position No. ', 1:5)))
     observe({
       if (!is.null(input$HT.eccen)) {
         DF.eccen <- HOT2R(input$HT.eccen)
       } else {
         if (is.null(values[["DF.eccen"]])) {DF.eccen <- DF.eccen} else {DF.eccen <- values[["DF.eccen"]]}
       }
-      values[["DF.eccen"]] <- DF.eccen
+      values[["DF.eccen"]] <- DF.eccen()
     })
     output$HT.eccen <- renderRHandsontable({
       DF.eccen <- values[["DF.eccen"]]
       if (!is.null(DF.eccen))
         rhandsontable(DF.eccen, rowHeaderWidth = 110, overflow = 'visible') %>% 
-        hot_col(col = 1, type = 'numeric', allowInvalid = FALSE) %>%
+        hot_col(col = 1, type = 'numeric', allowInvalid = FALSE, format = frmtEccen()) %>%
         hot_cols(colWidths = 110) %>%
         hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE) %>%
         hot_rows(fixedRowsTop = 5)

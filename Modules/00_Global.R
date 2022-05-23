@@ -1,3 +1,5 @@
+DummyNumber <- c(0, 0.123456789)
+
 spcs <- function(n) {return(paste0(rep('&nbsp;', n), collapse = ''))}
 
 ReqField <- function(x) {return(HTML(paste0(x, '<font color=\"#FF0000\">*</font>', spcs(3))))}
