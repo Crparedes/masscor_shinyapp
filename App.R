@@ -8,6 +8,7 @@ library(shinyWidgets)
 library(shinyjs)
 library(ggplot2) #Grammar of graphics
 library(ggfortify)
+library(writexl)
 library(rhandsontable)
 # library(data.table)
 library(masscor)

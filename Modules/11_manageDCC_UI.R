@@ -99,7 +99,9 @@ manageDCC.UI <- function(id) {
                 h5(tags$b('Indication error test')), 
                 tags$div(id = "inline", 
                          fluidRow(
-                           column(6, fluidRow(column(11, offset = 1, numericInput(ns('IndErrorPoints'), label = ReqField('No. of calibration points'), min = 2, max = 30, value = 10, step = 1)))),
+                           column(6, fluidRow(column(11, offset = 1, 
+                                                     numericInput(ns('IndErrorPoints'), 
+                                                                  label = ReqField('No. of calibration points'), min = 2, max = 30, value = 10, step = 1)))),
                            column(6, '(Set this value before entering data in the table)'))),
                 tags$br(),
                 rHandsontableOutput(ns("HT.indicationError")),
@@ -127,8 +129,8 @@ manageDCC.UI <- function(id) {
                   ),
                   tags$div(
                     tags$b(ReqField('Relative humidity')), 
-                    tags$div(id = "inline", numericInput(ns('Temp1'), label = NonReqField('min.'), value = NULL, min = 0),
-                             numericInput(ns('Temp2'), label = NonReqField('max.'), value = NULL, min = 0)),
+                    tags$div(id = "inline", numericInput(ns('rHumi1'), label = NonReqField('min.'), value = NULL, min = 0),
+                             numericInput(ns('rHumi2'), label = NonReqField('max.'), value = NULL, min = 0)),
                     radioButtons(ns('rHumiUnits'), label = NULL, choices = rHumiAllowedUnits, inline = FALSE)
                   )
                 ),

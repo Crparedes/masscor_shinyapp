@@ -10,7 +10,7 @@ are.null.empty <- function(x) {
 }
 
 # Getting troubles using hot_to_r(), The following is a workaround
-HOT2R <- function(x) {
+HOT2R <- function(x, IgnoreRowNames = FALSE) {
   if (is.null(x)) return(NA)
   rows <- length(x$data)
   cols <- length(x$data[[1]])
@@ -21,7 +21,7 @@ HOT2R <- function(x) {
     }
   }
   colnames(extracted) <- unlist(x$params$colHeaders)
-  rownames(extracted) <- unlist(x$params$rowHeaders)
+  if (!IgnoreRowNames) rownames(extracted) <- unlist(x$params$rowHeaders)
   return(extracted)
 }
 

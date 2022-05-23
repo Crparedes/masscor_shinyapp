@@ -31,6 +31,6 @@ errorBoxNoNAWIDCC <- infoBox(title = 'Missing calibration information', color = 
                                tags$br(),
                                "It seems that no calibration certificate information has been loaded yet.", tags$br(), tags$br(), "Please go to the previous tab and
                                upload a formely created masscor NAWI DCC (a file with extension '.rds') or create a new one.", tags$br(), tags$br(), 
-                               "Be sure to press either the button", tags$u("Upload selected NAWI DCC"), " or ", tags$u("Finish NAWI DCC,"), "accordingly.", tags$br(), tags$br(),
-                               "You will be redirected soon..."
+                               "Be sure to press either the button", tags$u("Upload selected NAWI DCC"), " or ", tags$u("Finish NAWI DCC,"), "accordingly.", tags$br(), tags$br()#,
+                               #"You will be redirected soon..."
                                ))

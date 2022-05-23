@@ -5,10 +5,10 @@ manageDCC.Server <- function(input, output, session) {
   
   ## Navigation between tabs
   {
-  BoleanIncompleteAdminDat <- reactive(FALSE)
-    #are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
-  BoleanIncompleteMeasurRes <- reactive(FALSE)
-    #are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Temp1, input$bPres1, input$rHumi1)))
+  BoleanIncompleteAdminDat <- reactive(# FALSE)
+    are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
+  BoleanIncompleteMeasurRes <- reactive(# FALSE)
+    are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Temp1, input$bPres1, input$rHumi1)))
   
   observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
                if (BoleanIncompleteAdminDat()) {
@@ -162,7 +162,8 @@ manageDCC.Server <- function(input, output, session) {
       CompleteRepeatability = HOT2R(input$HT.repeatability),
       CompleteEccentricity = HOT2R(input$HT.eccen),
       Comments = list(Com1 = input$Comments1, Com2 = input$Comments2, Com3 = input$Comments3),
-      CompleteEnvCond = c(input$Temp1, input$Temp2, input$bPres1, input$bPres2, input$rHumi1, input$rHumi2)
+      CompleteEnvCond = c(input$Temp1, input$Temp2, input$bPres1, input$bPres2, input$rHumi1, input$rHumi2),
+      CertificateNumber = input$certificate
     ))
     
     NAWIDCC <- eventReactive(
