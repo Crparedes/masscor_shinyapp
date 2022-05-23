@@ -7,7 +7,7 @@ conventionalMass.Server <- function(input, output, session, NAWIDCC, parent, mai
     }})
   output$noDCC.loaded <- renderUI(if(failedFileBolean()) {return(errorBoxNoNAWIDCC)})
   observe({ 
-    if(failedFileBolean()) {delay(8e3, updateTabItems(session = parent, inputId = 'MainNavTabs', selected = 'CreateUploadDCC'))}})
+    if(failedFileBolean() && mainNavTb() != 'Home') {delay(8e3, updateTabItems(session = parent, inputId = 'MainNavTabs', selected = 'CreateUploadDCC'))}})
   
   
   choices.d <- reactive(convertMassUnitsSI(NAWIDCC$NAWIDCC()$d, from = NAWIDCC$NAWIDCC()$standardUnits, to = NAWIDCC$NAWIDCC()$orgdUnits) * c(1, 10, 100))

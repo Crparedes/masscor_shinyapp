@@ -28,6 +28,7 @@ ui <- fluidPage(
     title = title, windowTitle = 'masscor Graphical User Interface', id = 'MainNavTabs',# selected = 'Home',
     theme = shinytheme("flatly"), position = 'fixed-top', collapsible = TRUE, lang = 'en',
     tabPanel(title = HTML('Home<br>&nbsp;'), icon = icon('compass'), tags$hr(), tags$hr(), homeMasscor.UI(id = 'homeMasscor'), 
+             value = 'Home',
              actionButton(inputId = 'brwz1', label = tags$b('Browser()')) #Eliminar esta linea
              ),
     tabPanel(title = HTML('Create/upload <br>', spcs(7), 'NAWI DCC'), icon = icon('certificate'), value = 'CreateUploadDCC',
