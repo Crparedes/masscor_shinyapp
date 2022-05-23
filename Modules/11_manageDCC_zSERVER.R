@@ -3,12 +3,12 @@
 manageDCC.Server <- function(input, output, session) {
   observeEvent(input$brwzInsideModule, browser())
   
-  # Navigation between tabs
+  ## Navigation between tabs
   {
   BoleanIncompleteAdminDat <- reactive(FALSE)
     #are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
-  BoleanIncompleteMeasurRes <- reactive(#FALSE)
-    are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Tempe, input$bPres, input$rHumi)))
+  BoleanIncompleteMeasurRes <- reactive(FALSE)
+    #are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Temp1, input$bPres1, input$rHumi1)))
   
   observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
                if (BoleanIncompleteAdminDat()) {
@@ -61,7 +61,8 @@ manageDCC.Server <- function(input, output, session) {
                 format = frmtReap()#as.character(format(convertMassUnitsSI(input$d, from = input$d.units, to = input$rep.units), scientific = FALSE))
                 ) %>%
         hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE) %>%
-        hot_rows(fixedRowsTop = input$ReapTestPoints)
+        hot_rows(fixedRowsTop = input$ReapTestPoints) %>%
+          hot_table(highlightCol = TRUE, highlightRow = TRUE)
       }
     })
   }
@@ -85,7 +86,8 @@ manageDCC.Server <- function(input, output, session) {
         hot_col(col = 1, type = 'numeric', allowInvalid = FALSE, format = frmtEccen()) %>%
         hot_cols(colWidths = 110) %>%
         hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE) %>%
-        hot_rows(fixedRowsTop = 5)
+        hot_rows(fixedRowsTop = 5) %>%
+        hot_table(highlightCol = TRUE, highlightRow = TRUE)
     })
   }
   
@@ -109,7 +111,8 @@ manageDCC.Server <- function(input, output, session) {
         hot_col(col = 1, type = 'autocomplete', source = names(unitsOpt), strict = TRUE, allowInvalid = FALSE) %>%
         hot_cols(fixedColumnsLeft = 1)  %>%
         hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE) %>%
-        hot_rows(fixedRowsTop = 3)
+        hot_rows(fixedRowsTop = 3) %>%
+        hot_table(highlightCol = TRUE, highlightRow = TRUE)
     })
   }
   
@@ -121,7 +124,20 @@ manageDCC.Server <- function(input, output, session) {
     inputId = session$ns('FinishNAWIDCC1'), label = tags$b(ifelse(NAWI.DCC.Completed() == 0, 'Finish NAWI DCC', 'Update NAWI DCC')), width = '100%'))
   output$FinishNAWIDCC2 <- renderUI(actionButton(
     inputId = session$ns('FinishNAWIDCC2'), label = tags$b(ifelse(NAWI.DCC.Completed() == 0, 'Finish NAWI DCC', 'Update NAWI DCC')), width = '100%'))
-  output$FinishNAWIDCC3 <- renderUI(return(actionButton(inputId = session$ns('FinishNAWIDCC3'), label = tags$b('Upload selected NAWI DCC'), width = '50%')))
+  output$FinishNAWIDCC3 <- renderUI({
+    if(is.error(readRDS(input$NAWI.DCC_uploaded$datapath))) {
+      return(tags$b('File must have .rds extension. The upload is not complete until a clickable button  that states',
+                    tags$u('Upload selected NAWI DCC'), 'is shown and selected.'))
+    } else {
+      dataFile <- readRDS(input$NAWI.DCC_uploaded$datapath)
+      if(class(dataFile) == 'calibCert') {
+        return(actionButton(inputId = session$ns('FinishNAWIDCC3'), label = tags$b('Upload selected NAWI DCC'), width = '50%'))
+      } else {
+        return(tags$b('File does not seem to have been created in the platform... The upload is not complete until a clickable button that states',
+                      tags$u('Upload selected NAWI DCC'), 'is shown and selected.'))
+      }
+    }
+  })
 
   observeEvent(
     input$FinishNAWIDCC1,
@@ -139,12 +155,14 @@ manageDCC.Server <- function(input, output, session) {
     logo <- reactive(readPNG(source = input$InstitutLogo$datapath))
     
     add.info <- reactive(list(
+      masscorAppVersion = masscorAppVersion,
       Logo = tryCatch(logo(), error = function(x) return(NA)),
       ResponsiblePerson = input$respPerson,
       CalibrationPlace = input$calPlace,
       CompleteRepeatability = HOT2R(input$HT.repeatability),
       CompleteEccentricity = HOT2R(input$HT.eccen),
-      Comments = list(Com1 = input$Comments1, Com2 = input$Comments2, Com3 = input$Comments3)
+      Comments = list(Com1 = input$Comments1, Com2 = input$Comments2, Com3 = input$Comments3),
+      CompleteEnvCond = c(input$Temp1, input$Temp2, input$bPres1, input$bPres2, input$rHumi1, input$rHumi2)
     ))
     
     NAWIDCC <- eventReactive(
@@ -158,7 +176,7 @@ manageDCC.Server <- function(input, output, session) {
                     expanded = TRUE, k = input$IndErrorK, traceability = input$traceability, classSTD = input$classSTD,
                     rep = SummarizeRepInput(HOT2R(input$HT.repeatability)), rep.units = rep(input$rep.units, 2),
                     eccen = SummarizeEccenInput(HOT2R(input$HT.eccen)), eccen.units = rep(input$eccen.units, 2), 
-                    Temp = input$Temp, p = input$bPres, h = input$rHumi, 
+                    Temp = mean(c(input$Temp1, input$Temp2)), p = mean(c(input$bPres1, input$bPres2)), h = mean(c(input$rHumi1, input$rHumi2)), 
                     unitsENV = c(input$TempUnits, input$bPresUnits, input$rHumiUnits),
                     add.info = add.info()
           ))
@@ -172,9 +190,10 @@ manageDCC.Server <- function(input, output, session) {
     
   downloadDCC1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
-    splitLayout(
-      ifelse(input$SourceOption == 'daCapo', downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"), HTML(spcs(1))),
-      downloadButton(session$ns('DwnlPDFFile1'), 'Download human readable file (PDF)',  style = "width:100%;")))
+    downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"))
+  downloadPDF1 <- eventReactive(
+    eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
+    downloadButton(session$ns('DwnlPDFFile1'), 'Download human readable file (PDF)',  style = "width:100%;"))
   
   output$DwnlDCCFile1 <- downloadHandler(
     filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
@@ -197,6 +216,7 @@ manageDCC.Server <- function(input, output, session) {
     contentType = NULL)
     
   output$downloadDCC1 <- renderUI(downloadDCC1())
+  output$downloadPDF1 <- renderUI(downloadPDF1())
   
   
   output$primitive <- renderPrint(print(NAWIDCC(), complete = TRUE))

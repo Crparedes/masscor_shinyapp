@@ -1,3 +1,5 @@
+masscorAppVersion <- '0.1.12'
+
 DummyNumber <- c(0, 0.123456789)
 
 spcs <- function(n) {return(paste0(rep('&nbsp;', n), collapse = ''))}
@@ -68,5 +70,41 @@ SummarizeEccenInput <- function(x) {
 #x <- input$HT.eccen
 
 
+HTMELIZAME.Esta <- function(mat, dVal, OrgUnits, UnitsTable) {
+  htmlizado <- '<ol>'
+  for (i in 1:nrow(mat)) {
+    a1 <- format(round(c(mat[i, 1], DummyNumber), digits = abs(floor(log10(convertMassUnitsSI(dVal, from = OrgUnits, to = UnitsTable))))))[1]
+    a2 <- format(round(c(mat[i, 2], DummyNumber), digits = abs(floor(log10(convertMassUnitsSI(dVal, from = OrgUnits, to = UnitsTable)) - 1))))[1]
+    htmlizado <- c(htmlizado, '<li>', spcs(5), a1, '&nbsp;&#177;&nbsp;', 
+                   format(a2, scientific = FALSE), '</li>')
+  }
+  htmlizado <- c(htmlizado, '</ol>')
+  return(htmlizado)
+}
+
+
+
 
 #,https://cran.r-project.org/web/packages/masscor/index.html")
+
+errorBoxNoNAWIDCC <- infoBox(title = 'Missing calibration information', color = 'yellow', width = 10, icon = icon('bug'), fill = TRUE, 
+                             value = tags$div(
+                               tags$br(),
+                               "It seems that no calibration certificate information has been loaded yet.", tags$br(), tags$br(), "Please go to the previous tab and
+                               upload a formely created masscor NAWI DCC (a file with extension '.rds') or create a new one.", tags$br(), tags$br(), 
+                               "Be sure to press either the button", tags$u("Upload selected NAWI DCC"), " or ", tags$u("Finish NAWI DCC,"), "accordingly.", tags$br(), tags$br(),
+                               "You will be redirected soon..."
+                               ))
+
+is.error <- function (expr, tell = FALSE, force = FALSE) { # Taken from https://www.rdocumentation.org/packages/berryFunctions/versions/1.21.14
+  expr_name <- deparse(substitute(expr))
+  test <- try(expr, silent = TRUE)
+  iserror <- inherits(test, "try-error")
+  if (tell) 
+    if (iserror) 
+      message("Note in is.error: ", test)
+  if (force) 
+    if (!iserror) 
+      stop(expr_name, " is not returning an error.", call. = FALSE)
+  iserror
+}
