@@ -6,8 +6,7 @@ conventionalMass.Server <- function(input, output, session, NAWIDCC, parent, mai
       if (class(NAWIDCC$NAWIDCC()) != 'calibCert') {return(TRUE)} else {return(FALSE)}
     }})
   output$noDCC.loaded <- renderUI(if(failedFileBolean()) {return(errorBoxNoNAWIDCC)})
-  # observe({ 
-  #   if(failedFileBolean()) {delay(8e3, updateTabItems(session = parent, inputId = 'MainNavTabs', selected = 'CreateUploadDCC'))}})
+  #observe({if(failedFileBolean()) {delay(8e3, updateTabItems(session = parent, inputId = 'MainNavTabs', selected = 'CreateUploadDCC'))}})
   
   
   choices.d <- reactive(convertMassUnitsSI(NAWIDCC$NAWIDCC()$d, from = NAWIDCC$NAWIDCC()$standardUnits, to = NAWIDCC$NAWIDCC()$orgdUnits) * c(1, 10, 100))

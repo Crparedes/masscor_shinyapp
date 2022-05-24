@@ -39,7 +39,7 @@ HTMELIZAME.Esta <- function(mat, dVal, OrgUnits, UnitsTable) {
   return(htmlizado)
 }
 
-
+niceSeparator <- function(){return(tags$hr(style = "border-top: 5px solid #2c3e50;"))}
 
 
 EnsureMinValue <- function(x, min) {return(max(na.omit(c(x, min))))}
@@ -51,6 +51,7 @@ SummarizeRepInput <- function(x) {
 SummarizeEccenInput <- function(x) {
   return(c(mean(x[[1]]), max(abs(x[[1]][1] - x[[1]][2:5]))))
 }
+
 
 
 # Taken from https://www.rdocumentation.org/packages/berryFunctions/versions/1.21.14
