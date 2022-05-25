@@ -10,6 +10,7 @@ conventionalMass.UI <- function(id) {
         6,            
         h4(tags$b('Instructions to calculate conventional masses:')),
         tags$ol(
+          tags$li('Create or upload a NAWI DCC created with masscor'),
           tags$li("Select the NAWI scale division used for the mass indications:"),
           "(Just in case you set a balance readability lower than the maximum balance readability)", tags$br(), tags$br(),
           tags$div(id = "inline", uiOutput(ns('current.d.value'))), tags$hr(),

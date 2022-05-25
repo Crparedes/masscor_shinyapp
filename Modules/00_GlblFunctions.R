@@ -27,7 +27,7 @@ HOT2R <- function(x, IgnoreRowNames = FALSE) {
 
 # This is a uglier, more robust workaround... 
 # There may be a trouble with the rhandsontable renderizer, Only 4 digital places are taken
-HTMELIZAME.Esta <- function(mat, dVal, OrgUnits, UnitsTable) {
+HTMELIZAME.Esta.Mass <- function(mat, dVal, OrgUnits, UnitsTable) {
   htmlizado <- '<ol>'
   for (i in 1:nrow(mat)) {
     a1 <- format(round(c(mat[i, 1], DummyNumber), digits = abs(floor(log10(convertMassUnitsSI(dVal, from = OrgUnits, to = UnitsTable))))))[1]
@@ -38,6 +38,19 @@ HTMELIZAME.Esta <- function(mat, dVal, OrgUnits, UnitsTable) {
   htmlizado <- c(htmlizado, '</ol>')
   return(htmlizado)
 }
+
+HTMELIZAME.Esta.MABC <- function(mat) {
+  htmlizado <- '<ol>'
+  for (i in 1:nrow(mat)) {
+    a1 <- format(round(c(mat[i, 1], DummyNumber), digits = 7))[1]
+    a2 <- format(signif(c(mat[i, 2], DummyNumber), digits = 2))[1]
+    htmlizado <- c(htmlizado, '<li>', spcs(5), '(', a1, '&nbsp;&#177;&nbsp;', 
+                   format(a2, scientific = FALSE), ') ', '</li>')
+  }
+  htmlizado <- c(htmlizado, '</ol>')
+  return(htmlizado)
+}
+
 
 niceSeparator <- function(){return(tags$hr(style = "border-top: 5px solid #2c3e50;"))}
 

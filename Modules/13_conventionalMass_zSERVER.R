@@ -59,7 +59,7 @@ conventionalMass.Server <- function(input, output, session, NAWIDCC, parent, mai
   
   
   output$ConvMassText <- renderUI(HTML(
-    HTMELIZAME.Esta(ConventionalMasses(), dVal = as.numeric(input$current.d.value), OrgUnits = NAWIDCC$NAWIDCC()$orgdUnits, UnitsTable = input$UnitsTable)))
+    HTMELIZAME.Esta.Mass(ConventionalMasses(), dVal = as.numeric(input$current.d.value), OrgUnits = NAWIDCC$NAWIDCC()$orgdUnits, UnitsTable = input$UnitsTable)))
   
   ExportationGradeConvMassText <- reactive({
     minLength <- length(Indications()$Indication[!is.na(Indications()$Indication > 0)])
@@ -70,6 +70,7 @@ conventionalMass.Server <- function(input, output, session, NAWIDCC, parent, mai
       '___' = rep(NA, minLength),
       'Input indications' = Indications()$Indication[!is.na(Indications()$Indication > 0)],
       'Units' = rep(input$UnitsTable, minLength),
+      '____' = rep(NA, minLength),
        'Conventional mass' = ConventionalMasses()[, 1],
        'Standard uncertainty' = ConventionalMasses()[, 2],
        'Units.CM' = rep(input$UnitsTable, minLength))

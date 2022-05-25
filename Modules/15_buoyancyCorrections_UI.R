@@ -3,7 +3,7 @@ buoyancyCorrections.UI <- function(id) {
   column( # Revisar https://www.oiml.org/en/files/pdf_d/d028-e04.pdf
     width = 10, offset = 1,
     h3(tags$b('Air buoyancy correction factors using the masscor NAWI DCC and environmental conditions data.')),
-    #actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
+    actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     tags$br(),
     fluidRow(
       column(
@@ -51,30 +51,32 @@ buoyancyCorrections.UI <- function(id) {
           tags$li("Fill the right-top table with the densities and density uncertainties of the objects to be weighed."),
           "(More rows can be added by right-clicking in the table.)", tags$br(), tags$br(),
           
-          tags$li("Download the files with the MABC factors in the desired format."),
+          tags$li("Download the files with the MABC factor results in the desired format."),
         )),
       column(
         4, 
         tags$hr(), tags$hr(),
-        tags$b('Density of the local air:'), tags$hr(), tags$hr(),
-        tags$b('Density of the objects to be weighed:'), tags$hr(), tags$hr(),
-        tags$b('MABC factors of the objects to be weighed:'), tags$hr(), tags$hr(),
-        tags$br(),
-        downloadButton(ns('DwnlConvMassResCSV'), 'Download measurement results (CSV)'), tags$br(), tags$br(),
-        downloadButton(ns('DwnlConvMassResXLS'), 'Download measurement results (XLSX)')
+        tags$b('Estimated density of the local air:'), uiOutput(ns('airDensityStatment')), tags$hr(),
+        
+        tags$b('Density of the objects to be weighed:'), rHandsontableOutput(ns("Densities")), tags$hr(), 
+        
+        tags$b('MABC factors of the objects to be weighed:'),  tags$br(), tags$br(),
+        htmlOutput(ns('MABC.TextResults')), tags$br(),
+        downloadButton(ns('DwnlMABCsCSV'), 'Download MABC factors (CSV)'), tags$br(), tags$br(),
+        downloadButton(ns('DwnlMABCsXLS'), 'Download MABC factors (XLSX)')
       )
     ),
   
     niceSeparator(), niceSeparator(),
     
-    h4(tags$b('Instructions to calculate (real) masses')), uiOutput(ns('noDCC.loaded')),
-    
-    fluidRow(
-      column(
-        8,
-        
-        )),
-    niceSeparator()
+    # h4(tags$b('Instructions to calculate (real) masses')), uiOutput(ns('noDCC.loaded')),
+    # 
+    # fluidRow(
+    #   column(
+    #     8,
+    #     
+    #     )),
+    # niceSeparator()
   )
   
 }

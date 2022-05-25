@@ -6,6 +6,8 @@ tempeAllowedUnits <- c('ªC' = 'deg.C', K ='K')
 rHumiAllowedUnits <- c(Percentaje = '%', Fraction = 'frac')
 bPresAllowedUnits <- c('Pa', 'hPa', 'kPa', 'mmHg')
 densityAllowedUnits <- c('$$g~cm^{-3}$$' = 'GramPerCubicCentiMeter', '$$kg~m^{-3}$$' = 'KiloGramPerCubicMeter')
+densityHTMLUnits <- c(GramPerCubicCentiMeter = 'g cm<sup>-3</sup>', KiloGramPerCubicMeter = 'kg m<sup>-3</sup>')
+densityPlainUnits <- c(GramPerCubicCentiMeter = 'g/cm^3', KiloGramPerCubicMeter = 'kg/m^3')
 
 title <- tags$div(HTML(
   '<table text-align=left cellspacing=-10 cellPadding=30>
