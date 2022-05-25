@@ -1,0 +1,34 @@
+---
+title: "Calibration Certificate Information"
+author:
+  - name: "Calibrating Laboratory"
+date: '`r format(Sys.Date(), "%B %d, %Y")`'
+output: html_document
+params: 
+  n: NA
+  NAWIDCC: na
+---
+<style type="text/css">
+body{ /* Normal  */ font-size: 12px; }
+td {  /* Table  */  font-size: 8px;}
+h1.title {font-size: 24px; color: #59748f;}
+h1 { /* Header 1 */ font-size: 20px; color: #59748f;}
+h2 { /* Header 2 */ font-size: 17px; color: #59748f;}
+h3 { /* Header 3 */ font-size: 15px; font-family: "Times New Roman", Times, serif; color: #59748f;}
+code.r{ /* Code block */ font-size: 12px;}
+pre { /* Code block - determines code spacing between lines */ font-size: 14px;}
+</style>
+
+```{r setup, include = FALSE}
+  #NAWIDCC = '`r readRDS(file = "../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds")`'
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R `r params$n` Markdown
+
+This is an R Markdown document.  Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+```{r}
+class(params$NAWIDCC)
+```

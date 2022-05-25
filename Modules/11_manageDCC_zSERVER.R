@@ -200,27 +200,66 @@ manageDCC.Server <- function(input, output, session) {
     filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
     content = function(file) {saveRDS(NAWIDCC(), file = file)}, contentType = NULL)
   
+  
+  # DCC <- reactive({
+  #   
+  # })
+  output$markdown <- renderUI({
+    tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
+    file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+    params <- list(n = 50, NAWIDCC = NAWIDCC())
+    rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.html', params = params, quiet = TRUE, envir = globalenv())
+    
+    HTML(markdownToHTML(file = file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.html")))
+    tags$iframe(src = file.path('./Uploaded masscor NAWI DCC/', "Human_Readable_CC.html"), width = '100%', height = '800px', 
+                frameborder = 0, scrolling = 'auto')
+    
+  })
+  
+  # output$markdown <- renderUI({
+  #   tempReport <- file.path(tempdir(), "Human_Readable_CC.Rmd")
+  #   file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+  #   params <- list(n = 50)
+  #   # rmarkdown::render(tempReport, output_file = 'file.html',
+  #   #                   params = params,
+  #   #                   envir = globalenv(), quiet = TRUE)
+  #   
+  #   tags$div(HTML(markdown::markdownToHTML(knit('Human_Readable_CC.Rmd', quiet = TRUE))))
+  # })
+  
   # https://stackoverflow.com/questions/35800883/using-image-in-r-markdown-report-downloaded-from-shiny-app
-  output$DwnlPDFFile1 <- downloadHandler(
-    filename = function() {paste0("AnalogCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".pdf")}, 
-    content = function(file) {
-      src <- normalizePath('report.rmd')
-      src2 <- normalizePath('smiley.png')
-      owd <- setwd(tempdir())
-      on.exit(setwd(owd))
-      file.copy(src, 'report.rmd')
-      file.copy(src2, 'smiley.png') #NEW
-      library(rmarkdown)
-      out <- render('report.rmd',pdf_document())
-      file.rename(out, file)
-    },
-    contentType = NULL)
+  # output$DwnlPDFFile1 <- downloadHandler(
+  #   filename =  function() {paste0("NAWI_", NAWIDCC()$balanceID, "_", NAWIDCC()$serial, "_CalibrationCertificate", ".html")},
+  #   content = function(file) {
+  #     tempReport <- file.path(tempdir(), "Human_Readable_CC.Rmd")
+  #     file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+  #     params <- list(n = 50)
+  #     rmarkdown::render(tempReport, output_file = file,
+  #                       params = params,
+  #                       envir = new.env(parent = globalenv())
+  #     )
+  #   },
+  # 
+  #   
+  #   # filename = function() {paste0("AnalogCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".pdf")},
+  #   # content = function(file) {
+  #   #   src <- normalizePath('Human_Readable_CC')
+  #   #   src2 <- normalizePath('smiley.png')
+  #   #   owd <- setwd(tempdir())
+  #   #   on.exit(setwd(owd))
+  #   #   file.copy(src, 'Human_Readable_CC')
+  #   #   file.copy(src2, 'smiley.png') #NEW
+  #   #   library(rmarkdown)
+  #   #   out <- render('Human_Readable_CC', pdf_document())
+  #   #   file.rename(out, file)
+  #   # },
+  #   contentType = NULL)
     
   output$downloadDCC1 <- renderUI(downloadDCC1())
   output$downloadPDF1 <- renderUI(downloadPDF1())
   
   
-  output$primitive <- renderPrint(print(NAWIDCC(), complete = TRUE))
+  output$primitive <- renderPrint(ifelse(is.error(print(NAWIDCC())), 'Create a masscor NAWI DCC or upload a file', print(NAWIDCC(), complete = TRUE)))
   
   return(list('NAWIDCC' = NAWIDCC))
 }

@@ -13,6 +13,8 @@ library(rhandsontable)
 # library(data.table)
 library(masscor)
 library(png)
+library(knitr)
+library(markdown)
 library(htmlwidgets)
 # icon("flask")
 
