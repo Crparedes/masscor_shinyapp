@@ -1,12 +1,20 @@
 ---
-title: "Calibration Certificate Information"
-author:
-  - name: "Calibrating Laboratory"
-date: '`r format(Sys.Date(), "%B %d, %Y")`'
-output: html_document
 params: 
-  n: NA
+  title: "Calibration Certificate Information"
+  author: "Calibrating Laboratory"
+  address: na
+  date: '`r format(Sys.Date(), "%B %d, %Y")`'
   NAWIDCC: na
+  logoBolean: na
+output: 
+  html_document:
+  pdf_document:
+      keep_tex: true
+      includes:
+          in_header: header.tex
+title: '`r params$title`'
+author: na
+date: '`r params$date`'
 ---
 <style type="text/css">
 body{ /* Normal  */ font-size: 12px; }
@@ -23,18 +31,30 @@ pre { /* Code block - determines code spacing between lines */ font-size: 14px;}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r logoHTML, include = knitr::is_html_output(), echo = FALSE}
-Logo <- writePNG(params$NAWIDCC$add.info$Logo)
+if (params$logoBolean) {
+  if (knitr::is_html_output()) {
+    htmltools::img(src = knitr::image_uri(file.path("Logo.PNG")),
+                   alt = '(Institution Logo)', style = 'position:absolute; top:0; right:0; padding:10px; width:40%;')
+  }
+}
 
-htmltools::img(src = Logo,#knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
-               alt = 'logo', 
-               style = 'position:absolute; top:0; right:0; padding:10px;')
 
 ```
 
-## R `r params$n` Markdown
+# `r params$author`
+### `r params$address`
+|
+|
+## Certificate number: `r params$NAWIDCC$add.info$CertificateNumber`
 
-This is an R Markdown document.  Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+---
 
+## Object: Non Automatic Weighing Instrument (NAWI)
+
+
+directory: `r print(getwd())`
 ```{r}
+print(getwd())
+print(params$logoBolean)
 class(params$NAWIDCC)
 ```

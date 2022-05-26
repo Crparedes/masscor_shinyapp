@@ -37,7 +37,7 @@ manageDCC.UI <- function(id) {
               tags$div(
                 style = 'width: 100%;padding: 15px;',
                 h5(tags$b('Letterhead')),
-              textInput(inputId = ns('institution'), label = ReqField('Calibrating laboratory'), width = '100%', placeholder = 'Name and address.'),
+              textInput(inputId = ns('institution'), label = ReqField('Calibrating laboratory'), width = '100%', placeholder = 'Name, address.'),
                 splitLayout(cellWidths = c('30%', '70%'),
                             checkboxInput(inputId = ns('bolLogo'), label = 'Include institution logo', value = FALSE),
                             conditionalPanel(
@@ -106,12 +106,14 @@ manageDCC.UI <- function(id) {
                            column(6, '(Set this value before entering data in the table)'))),
                 tags$br(),
                 rHandsontableOutput(ns("HT.indicationError")),
-                tags$div(id = "inline", numericInput(ns('IndErrorK'), label = ReqField('Expanded uncertainty coverage factor'), min = 1, max = 10, value = 2, step = 1)),
-                textInput(ns('traceability'), label = ReqField('Metrological traceability of the calibration'), width = '100%', 
-                          placeholder = 'Calibration certificate information of the standard weights.'),
-                tags$div(id = "inline",
+                tags$div(id = "inline", 
+                         numericInput(ns('IndErrorK'), label = ReqField('Expanded uncertainty coverage factor'), min = 1, max = 10, value = 2, step = 1),
+                         textInput(ns('traceability'), label = ReqField('Metrological traceability of the calibration'), width = '100%', 
+                                   placeholder = 'Calibration certificate information of the standard weights.'),
                          radioButtons(ns('classSTD'), label = ReqField('OIML class of the standard weights'), 
                                       choices = c('E1', 'E2', 'F1', 'F2', 'M1', 'M2', 'M3'), inline = TRUE, selected = character(0))),
+                
+                #tags$div(id = "inline"),
                 tags$hr(), tags$hr(),
                 h5(tags$b('Environmental conditions during calibration')),
                 splitLayout(
@@ -169,7 +171,7 @@ manageDCC.UI <- function(id) {
         conditionalPanel(condition = 'input.SourceOption == "daCapo"', ns = ns, uiOutput(ns('downloadDCC1'))),
         uiOutput(ns('downloadPDF1')) 
       ), 
-      
+      tags$hr(),
       uiOutput(ns('markdown')),
       
       verbatimTextOutput(ns('primitive')))

@@ -153,10 +153,18 @@ manageDCC.Server <- function(input, output, session) {
   # DCC creation
   {
     logo <- reactive(readPNG(source = input$InstitutLogo$datapath))
+    logoBolean <- reactiveVal(FALSE)
+    observe({if (!is.error(logo())) {if (class(logo()) == "array") {
+        writePNG(image = logo(), target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG"))
+        logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG")))}}})
+    observe({if (class(NAWIDCC()$add.info$Logo) == "array") {
+      writePNG(image = NAWIDCC()$add.info$Logo, target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG"))
+      logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG")))}})
+    
     
     add.info <- reactive(list(
       masscorAppVersion = masscorAppVersion,
-      Logo = tryCatch(logo(), error = function(x) return(NA)),
+      Logo = tryCatch(logo(), error = function(x) return(FALSE)),
       ResponsiblePerson = input$respPerson,
       CalibrationPlace = input$calPlace,
       CompleteRepeatability = HOT2R(input$HT.repeatability),
@@ -205,9 +213,13 @@ manageDCC.Server <- function(input, output, session) {
   #   
   # })
   output$markdown <- renderUI({
+    NAWIDCC <- NAWIDCC()
+    
     tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
     file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
-    params <- list(n = 50, NAWIDCC = NAWIDCC())
+    params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
+                   address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
+                   date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
     rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.html', params = params, quiet = TRUE, envir = globalenv())
     
     HTML(markdownToHTML(file = file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.html")))
@@ -259,7 +271,7 @@ manageDCC.Server <- function(input, output, session) {
   output$downloadPDF1 <- renderUI(downloadPDF1())
   
   
-  output$primitive <- renderPrint(ifelse(is.error(print(NAWIDCC())), 'Create a masscor NAWI DCC or upload a file', print(NAWIDCC(), complete = TRUE)))
+  output$primitive <- renderPrint(ifelse(is.error(print(NAWIDCC())), return('Create a masscor NAWI DCC or upload a file'), return(NAWIDCC())))
   
   return(list('NAWIDCC' = NAWIDCC))
 }
