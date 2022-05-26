@@ -20,9 +20,15 @@ pre { /* Code block - determines code spacing between lines */ font-size: 14px;}
 </style>
 
 ```{r setup, include = FALSE}
-  #NAWIDCC = '`r readRDS(file = "../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds")`'
-
 knitr::opts_chunk$set(echo = TRUE)
+```
+```{r logoHTML, include = knitr::is_html_output(), echo = FALSE}
+Logo <- writePNG(params$NAWIDCC$add.info$Logo)
+
+htmltools::img(src = Logo,#knitr::image_uri(file.path(R.home("doc"), "html", "logo.jpg")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:10px;')
+
 ```
 
 ## R `r params$n` Markdown
