@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.4.24)  26 MAY 2022 19:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.4.24)  26 MAY 2022 19:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -536,7 +536,13 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
 37.
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) 
+)
+Overfull \hbox (186.49307pt too wide) in paragraph at lines 144--144
+[]\T1/lmtt/m/n/10 ## [1] "/home/cris/Dropbox/2_masscor_shinyapp/www/Uploaded ma
+sscor NAWI DCC/INSTITUTO NACIONAL DE METROLOGIA - COLOMBIA/4637"[] 
+ []
+
+
 AED: lastpage setting LastPage
 <logo.png, id=4, 1489.565pt x 370.38374pt>
 File: logo.png Graphic file (type png)
@@ -571,7 +577,7 @@ public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/s
 hare/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public
 /lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/tex
 mf/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Human_Readable_CC.pdf (1 page, 185574 bytes).
+Output written on Human_Readable_CC.pdf (1 page, 187326 bytes).
 PDF statistics:
  65 PDF objects out of 1000 (max. 8388607)
  53 compressed objects within 1 object stream

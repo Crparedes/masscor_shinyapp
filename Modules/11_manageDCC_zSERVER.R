@@ -205,16 +205,16 @@ manageDCC.Server <- function(input, output, session) {
     
   logoBolean <- reactiveVal(FALSE)
   observe({if (!is.error(logo())) {if (class(logo()) == "array") {
-    writePNG(image = logo(), target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.png"))
-    logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.png")))}}})
+    writePNG(image = logo(), target = file.path(LclDirectory(), "Logo.png"))
+    logoBolean(file.exists(file.path(LclDirectory(), "Logo.png")))}}})
   observe({if (class(NAWIDCC()$add.info$Logo) == "array") {
-    writePNG(image = NAWIDCC()$add.info$Logo, target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.png"))
-    logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.png")))}})
+    writePNG(image = NAWIDCC()$add.info$Logo, target = file.path(LclDirectory(), "Logo.png"))
+    logoBolean(file.exists(file.path(LclDirectory(), "Logo.png")))}})
   
   # Save copy
   observe({
     #file.copy(from = 'Rmd_LaTeX/header.tex', to = 'www/Uploaded masscor NAWI DCC/header.tex', overwrite = TRUE)
-    saveRDS(NAWIDCC(), file = file.path('www/Uploaded masscor NAWI DCC/', "NAWIDCC.rds"))
+    saveRDS(NAWIDCC(), file = file.path(LclDirectory(), "NAWIDCC.rds"))
   })
   
   downloadDCC1 <- eventReactive(
@@ -223,11 +223,11 @@ manageDCC.Server <- function(input, output, session) {
   downloadPDF1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
     tags$div(
-      a(href = file.path('Uploaded masscor NAWI DCC/', "Human_Readable_CC.pdf"), 
+      a(href = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.pdf"), 
         actionButton(icon = icon('download'), session$ns('DwnlPDFFile1'), 'Download human readable output (.pdf)',  style = "width:95%;"),
         download = NA, target = "_blank"),
       tags$br(), tags$br(),
-      a(href = file.path('Uploaded masscor NAWI DCC/', "Human_Readable_CC.tex"), 
+      a(href = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.tex"), 
         actionButton(icon = icon('download'), session$ns('DwnlTexFile1'), 'Download LaTeX file (.tex)',  style = "width:95%;"),
         download = NA, target = "_blank")))
   
@@ -239,7 +239,7 @@ manageDCC.Server <- function(input, output, session) {
   
   output$pff <- renderUI({
     NAWIDCC <- NAWIDCC()
-    tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
+    tempReport <- file.path(LclDirectory(), "Human_Readable_CC.Rmd")
     file.copy("Rmd_LaTeX/Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
     params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
                    address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
@@ -247,66 +247,9 @@ manageDCC.Server <- function(input, output, session) {
     rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.pdf', params = params, quiet = TRUE, envir = globalenv())
     
     return(tags$iframe(style = "height:800px; width:100%; scrolling=yes",
-                       src = file.path('Uploaded masscor NAWI DCC/', 'Human_Readable_CC.pdf')))})
+                       src = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), 'Human_Readable_CC.pdf')))})
   
-  # output$downloadPDF1 <- downloadHandler(
-  #   # For PDF output, change this to "report.pdf"
-  #   filename = function() {paste0("NAWI_", NAWIDCC()$balanceID, "_", NAWIDCC()$serial, "_CalibrationCertificate", ".html")},
-  #   content = function(file) {
-  #     save_html(html = HTML(markdownToHTML(file = file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.html"))), 
-  #               file = file)
-  #     
-  #     # NAWIDCC <- NAWIDCC()
-  #     # tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
-  #     # file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
-  #     # params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
-  #     #                address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
-  #     #                date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
-  #     # rmarkdown::render(tempReport, output_file = file,
-  #     #                   params = params, quiet = TRUE,
-  #     #                   envir = globalenv())
-  #   }
-  # )
-  
-  # output$markdown <- renderUI({
-  #   tempReport <- file.path(tempdir(), "Human_Readable_CC.Rmd")
-  #   file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
-  #   params <- list(n = 50)
-  #   # rmarkdown::render(tempReport, output_file = 'file.html',
-  #   #                   params = params,
-  #   #                   envir = globalenv(), quiet = TRUE)
-  #   
-  #   tags$div(HTML(markdown::markdownToHTML(knit('Human_Readable_CC.Rmd', quiet = TRUE))))
-  # })
-  
-  # https://stackoverflow.com/questions/35800883/using-image-in-r-markdown-report-downloaded-from-shiny-app
-  # output$DwnlPDFFile1 <- downloadHandler(
-  #   filename =  function() {paste0("NAWI_", NAWIDCC()$balanceID, "_", NAWIDCC()$serial, "_CalibrationCertificate", ".html")},
-  #   content = function(file) {
-  #     tempReport <- file.path(tempdir(), "Human_Readable_CC.Rmd")
-  #     file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
-  #     params <- list(n = 50)
-  #     rmarkdown::render(tempReport, output_file = file,
-  #                       params = params,
-  #                       envir = new.env(parent = globalenv())
-  #     )
-  #   },
-  # 
-  #   
-  #   # filename = function() {paste0("AnalogCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".pdf")},
-  #   # content = function(file) {
-  #   #   src <- normalizePath('Human_Readable_CC')
-  #   #   src2 <- normalizePath('smiley.png')
-  #   #   owd <- setwd(tempdir())
-  #   #   on.exit(setwd(owd))
-  #   #   file.copy(src, 'Human_Readable_CC')
-  #   #   file.copy(src2, 'smiley.png') #NEW
-  #   #   library(rmarkdown)
-  #   #   out <- render('Human_Readable_CC', pdf_document())
-  #   #   file.rename(out, file)
-  #   # },
-  #   contentType = NULL)
-    
+
   output$downloadDCC1 <- renderUI(downloadDCC1())
   output$downloadPDF1 <- renderUI(downloadPDF1())
   
