@@ -4,7 +4,7 @@ homeMasscor.UI <- function(id) {
     width = 10, offset = 1, h3(tags$b('Mass measurement corrections using the R package masscor')), tags$br(),
     fluidRow(
       column(
-        width = 8, 
+        width = 7, 
         h4("The R package", tags$a(href = "https://CRAN.R-project.org/package=masscor", tags$b("masscor"), target = "_blank"), "provides classes, functions
            and methods for storing and using calibration information of
            non-automatic weighing instruments (NAWI).", tags$br(), tags$br(),
@@ -29,7 +29,7 @@ homeMasscor.UI <- function(id) {
            tags$a(href = "https://shiny.rstudio.com/", "Shiny,", target = "_blank"), "designed to build interactive web apps with R.", tags$br(), "A valuable introduction to R programming can be found from", 
            tags$a(href = "https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "Venables and Smith (2022).", target = "_blank"))
       ),
-      column(width = 4, div(img(src = "E2_2kg.png", width = '90%'), style = "text-align: center;"), tags$br(), tags$br())))
+      column(width = 5, div(img(src = "E2_2kg.jpg", width = '90%'), style = "text-align: center;"), tags$br(), tags$br())))
 }
 
 homeMasscor.Server <- function(input, output, session) {

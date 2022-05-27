@@ -1,0 +1,13 @@
+name: masscor
+title: masscor
+username:
+account: crparedes
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6384557
+bundleId: 5951856
+url: https://crparedes.shinyapps.io/masscor/
+when: 1653662952.61819
+lastSyncTime: 1653662952.61821
+asMultiple: FALSE
+asStatic: FALSE
