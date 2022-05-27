@@ -14,8 +14,8 @@ header-includes:
     \pagestyle{fancy}   
     \fancyhf{}
     \addtolength{\headheight}{1.0cm}
-    \lhead{\includegraphics[width = 7cm]{logo.png}}
-    \lfoot{Page \thepage of \pageref{LastPage}}
+    \lhead{\IfFileExists{logo.png}{\includegraphics[width = 7cm]{logo.png}}}
+    \lfoot{Page \thepage of~\pageref{LastPage}}
     \fancypagestyle{plain}{\pagestyle{fancy}}
     \renewcommand{\headrulewidth}{0pt}
 title: '`r params$title`'

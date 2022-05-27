@@ -99,7 +99,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\usepackage{fancyhdr, graphicx, eurosym, booktabs, xcolor, lastpage} \pagestyle{fancy} \fancyhf{} \addtolength{\headheight}{1.0cm} \lhead{\includegraphics[width = 7cm]{logo.png}} \lfoot{Page \thepage of \pageref{LastPage}} \fancypagestyle{plain}{\pagestyle{fancy}} \renewcommand{\headrulewidth}{0pt}
+\usepackage{fancyhdr, graphicx, eurosym, booktabs, xcolor, lastpage} \pagestyle{fancy} \fancyhf{} \addtolength{\headheight}{1.0cm} \lhead{\IfFileExists{logo.png}{\includegraphics[width = 7cm]{logo.png}}} \lfoot{Page \thepage of \pageref{LastPage}} \fancypagestyle{plain}{\pagestyle{fancy}} \renewcommand{\headrulewidth}{0pt}
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
