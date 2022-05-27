@@ -30,16 +30,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r logoHTML, echo = FALSE}
 library(masscor)
-#NAWIDCC <- readRDS('NAWIDCC.rds')
+# NAWIDCC <- readRDS('NAWIDCC.rds')
 NAWIDCC <- params$NAWIDCC
-
-if (FALSE){#params$logoBolean) {
-  if (knitr::is_html_output()) {
-    htmltools::img(src = knitr::image_uri(file.path("Logo.PNG")),
-                   alt = '(Institution Logo)', style = 'position:absolute; top:0; right:0; padding:10px; width:40%; max-width: 500px;')
-  }
-}
-
 
 ```
 
