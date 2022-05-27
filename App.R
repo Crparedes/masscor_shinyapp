@@ -16,6 +16,7 @@ library(png)
 library(knitr)
 library(markdown)
 library(htmlwidgets)
+library(htmltools)
 # icon("flask")
 
 modules <- with(list(pt = 'Modules/'), paste0(pt, list.files(path = pt)))

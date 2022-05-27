@@ -169,11 +169,14 @@ manageDCC.UI <- function(id) {
       #tags$b(''),
       splitLayout(
         conditionalPanel(condition = 'input.SourceOption == "daCapo"', ns = ns, uiOutput(ns('downloadDCC1'))),
-        uiOutput(ns('downloadPDF1')) 
-      ), 
+        uiOutput(ns('downloadPDF1'))
+      ),
       tags$hr(),
-      uiOutput(ns('markdown')),
-      
-      verbatimTextOutput(ns('primitive')))
-    ))
+      uiOutput(ns('pff'))
+      #tags$hr(),
+      #verbatimTextOutput(ns('primitive'))
+      )
+    ),
+    tags$hr(), niceSeparator()
+  )
 }

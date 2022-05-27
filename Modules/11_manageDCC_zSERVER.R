@@ -151,17 +151,9 @@ manageDCC.Server <- function(input, output, session) {
   observeEvent(input$FinishNAWIDCC3, NAWI.DCC.Completed(NAWI.DCC.Completed() + 1))}
 
   # DCC creation
-  {
+  { 
+    
     logo <- reactive(readPNG(source = input$InstitutLogo$datapath))
-    logoBolean <- reactiveVal(FALSE)
-    observe({if (!is.error(logo())) {if (class(logo()) == "array") {
-        writePNG(image = logo(), target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG"))
-        logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG")))}}})
-    observe({if (class(NAWIDCC()$add.info$Logo) == "array") {
-      writePNG(image = NAWIDCC()$add.info$Logo, target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG"))
-      logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.PNG")))}})
-    
-    
     add.info <- reactive(list(
       masscorAppVersion = masscorAppVersion,
       Logo = tryCatch(logo(), error = function(x) return(FALSE)),
@@ -196,37 +188,85 @@ manageDCC.Server <- function(input, output, session) {
       }
     )
   }
+  
+  # Create directory for every new institution
+  FolderInstitution <- reactive(strsplit(x = NAWIDCC()$institution, split = ',')[[1]][1])
+  subfldr <- reactive(NAWIDCC()$add.info$CertificateNumber)
+  observe({
+    if(!dir.exists(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))) {
+      dir.create(path = paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))
+    }
+  })
+  #
+  LclDirectory <- reactive(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution(), '/', subfldr()))
+  observe(dir.create(path = LclDirectory()))
+   
+  
     
+  logoBolean <- reactiveVal(FALSE)
+  observe({if (!is.error(logo())) {if (class(logo()) == "array") {
+    writePNG(image = logo(), target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.png"))
+    logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.png")))}}})
+  observe({if (class(NAWIDCC()$add.info$Logo) == "array") {
+    writePNG(image = NAWIDCC()$add.info$Logo, target = file.path('www/Uploaded masscor NAWI DCC/', "Logo.png"))
+    logoBolean(file.exists(file.path('www/Uploaded masscor NAWI DCC/', "Logo.png")))}})
+  
+  # Save copy
+  observe({
+    #file.copy(from = 'Rmd_LaTeX/header.tex', to = 'www/Uploaded masscor NAWI DCC/header.tex', overwrite = TRUE)
+    saveRDS(NAWIDCC(), file = file.path('www/Uploaded masscor NAWI DCC/', "NAWIDCC.rds"))
+  })
+  
   downloadDCC1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
-    downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:100%;"))
+    downloadButton(session$ns('DwnlDCCFile1'), 'Download masscor NAWI DCC',  style = "width:95%;"))
   downloadPDF1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
-    downloadButton(session$ns('DwnlPDFFile1'), 'Download human readable file (PDF)',  style = "width:100%;"))
+    tags$div(
+      a(href = file.path('Uploaded masscor NAWI DCC/', "Human_Readable_CC.pdf"), 
+        actionButton(icon = icon('download'), session$ns('DwnlPDFFile1'), 'Download human readable output (.pdf)',  style = "width:95%;"),
+        download = NA, target = "_blank"),
+      tags$br(), tags$br(),
+      a(href = file.path('Uploaded masscor NAWI DCC/', "Human_Readable_CC.tex"), 
+        actionButton(icon = icon('download'), session$ns('DwnlTexFile1'), 'Download LaTeX file (.tex)',  style = "width:95%;"),
+        download = NA, target = "_blank")))
+  
   
   output$DwnlDCCFile1 <- downloadHandler(
     filename = function() {paste0("DCC_NAWI_", input$balanceID, "_", input$serial, "_", input$date, ".rds")}, 
     content = function(file) {saveRDS(NAWIDCC(), file = file)}, contentType = NULL)
   
   
-  # DCC <- reactive({
-  #   
-  # })
-  output$markdown <- renderUI({
+  output$pff <- renderUI({
     NAWIDCC <- NAWIDCC()
-    
     tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
-    file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+    file.copy("Rmd_LaTeX/Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
     params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
                    address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
                    date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
-    rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.html', params = params, quiet = TRUE, envir = globalenv())
+    rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.pdf', params = params, quiet = TRUE, envir = globalenv())
     
-    HTML(markdownToHTML(file = file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.html")))
-    tags$iframe(src = file.path('./Uploaded masscor NAWI DCC/', "Human_Readable_CC.html"), width = '100%', height = '800px', 
-                frameborder = 0, scrolling = 'auto')
-    
-  })
+    return(tags$iframe(style = "height:800px; width:100%; scrolling=yes",
+                       src = file.path('Uploaded masscor NAWI DCC/', 'Human_Readable_CC.pdf')))})
+  
+  # output$downloadPDF1 <- downloadHandler(
+  #   # For PDF output, change this to "report.pdf"
+  #   filename = function() {paste0("NAWI_", NAWIDCC()$balanceID, "_", NAWIDCC()$serial, "_CalibrationCertificate", ".html")},
+  #   content = function(file) {
+  #     save_html(html = HTML(markdownToHTML(file = file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.html"))), 
+  #               file = file)
+  #     
+  #     # NAWIDCC <- NAWIDCC()
+  #     # tempReport <- file.path('www/Uploaded masscor NAWI DCC/', "Human_Readable_CC.Rmd")
+  #     # file.copy("Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+  #     # params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
+  #     #                address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
+  #     #                date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
+  #     # rmarkdown::render(tempReport, output_file = file,
+  #     #                   params = params, quiet = TRUE,
+  #     #                   envir = globalenv())
+  #   }
+  # )
   
   # output$markdown <- renderUI({
   #   tempReport <- file.path(tempdir(), "Human_Readable_CC.Rmd")
