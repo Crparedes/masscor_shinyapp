@@ -241,6 +241,7 @@ manageDCC.Server <- function(input, output, session) {
     NAWIDCC <- NAWIDCC()
     tempReport <- file.path(LclDirectory(), "Human_Readable_CC.Rmd")
     file.copy("Rmd_LaTeX/Human_Readable_CC.Rmd", tempReport, overwrite = TRUE)
+    file.copy("www/eccen.png", file.path(LclDirectory(), "eccen.png"), overwrite = TRUE)
     params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
                    address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
                    date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())

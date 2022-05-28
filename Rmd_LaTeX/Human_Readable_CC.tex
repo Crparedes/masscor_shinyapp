@@ -40,47 +40,8 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
-\usepackage[margin=1in]{geometry}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage[left = 20mm, right = 20mm, top = 10mm, bottom =
+45mm]{geometry}
 \usepackage{longtable,booktabs}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -108,7 +69,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\usepackage{fancyhdr, graphicx, eurosym, booktabs, xcolor, lastpage} \pagestyle{fancy} \fancyhf{} \addtolength{\headheight}{1.0cm} \lhead{\IfFileExists{logo.png}{\includegraphics[width = 7cm]{logo.png}}} \lfoot{Page \thepage of~\pageref{LastPage}} \fancypagestyle{plain}{\pagestyle{fancy}} \renewcommand{\headrulewidth}{0pt} \usepackage{titling} \usepackage{booktabs} \usepackage{multicol}
+\usepackage{fancyhdr, graphicx, eurosym, booktabs, xcolor, lastpage} \pagestyle{fancy} \fancyhf{} \addtolength{\headheight}{2.5cm} \fancyheadoffset{10mm} \lhead{\IfFileExists{logo.png}{\includegraphics[height = 2cm]{logo.png}}} \lfoot{Page \thepage~of~\pageref{LastPage}} \fancypagestyle{plain}{\pagestyle{fancy}} \renewcommand{\headrulewidth}{0pt} \setlength{\headsep}{12mm} \usepackage{titling} \usepackage{booktabs} \usepackage{multicol} \setlength{\belowcaptionskip}{0pt plus 1pt minus 1pt}
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -120,15 +81,12 @@
 
 \(~\)
 
+\vspace{5ex}
 \begin{center}\textsc{\huge Calibration Certificate Information}\end{center}
+\vspace{8ex}
 
-\hypertarget{calibrating-laboratory}{%
-\section{Calibrating Laboratory}\label{calibrating-laboratory}}
-
-\hypertarget{na}{%
-\subsubsection{na}\label{na}}
-
-\(~\)
+\textbf{\Large Calibrating Laboratory}\newline \textbf{Adress}
+\vspace{4ex}
 
 \hypertarget{certificate-number-4637}{%
 \subsection{\texorpdfstring{Certificate number:
@@ -136,30 +94,49 @@
 
 \(\hrulefill\)
 
-\begin{tabular}{rp{0.7\linewidth}}
+\(~\)
+
+\begin{tabular}{@{$\qquad\qquad$}rp{0.7\linewidth}}
  \textbf{\large Object to calibrate:}&\textbf{\large Non Automatic Weighing Instrument (NAWI)}\\[3ex]
  \textbf{Identification:}&Balanza Mettler Toledo XPE 205\\
  \textbf{Serial:}&B743848411 / AF-07090\\
  \textbf{Calibration date:}&2020-07-16\\
  \textbf{Calibration place:}&Bogotá - Colombia.  Avenida Carrera 50 No. 26 - 55 Interior 2\\[2ex]
  \textbf{Responsible person:}&Ingeniero Jhon Alexander Barreto Gutiérrez\\
-                             & Físico Jorge Daniel Garcia Benavides\\
-                             &
-                             \\[2ex]
-
-\multicolumn{2}{@{}l}{\textit{Environmental conditions}}\\
+                     & Físico Jorge Daniel Garcia Benavides\\
+                     &\\[2ex]
+\multicolumn{2}{@{}l}{\textit{Environmental conditions during calibration}}\\
 \textbf{Ambient temperature:} & 19.85 $^oC$\\
 \textbf{Barometric pressure:} & 751.75 hPa\\
 \textbf{Relative humidity:}   & 46.05 \%\\
 \end{tabular}
 
+\(~\)
+
 \(\hrulefill\)
 
-\hypertarget{balance-readability}{%
-\subsection{Balance readability}\label{balance-readability}}
+\vspace{1ex}
 
-\hypertarget{repeatability-test-resuls}{%
-\subsection{Repeatability test resuls}\label{repeatability-test-resuls}}
+\hypertarget{nawi-description}{%
+\subsection{NAWI description}\label{nawi-description}}
+
+\begin{tabular}{@{$\qquad\qquad\qquad$}rrl}
+ \textbf{ Maximum load:}&\textbf{220} & mg\\
+ \textbf{ Minimum load:}&\textbf{0.01} & mg\\
+ \textbf{ Readability:} &\textbf{0.01} & mg\\
+\end{tabular}
+
+\(~\)
+
+\(\hrulefill\)
+
+\begin{flushright}\texttt{masscor App Version: 0.1.12}\end{flushright}
+
+\clearpage
+
+\hypertarget{repeatability-test-results}{%
+\subsection{Repeatability test
+results}\label{repeatability-test-results}}
 
 \begin{longtable}[]{@{}lrrr@{}}
 \caption{Repeatability test data. Units: {[}g{]}}\tabularnewline
@@ -181,55 +158,65 @@ Ind.7 & 0.01001 & 99.99997 & 199.99996\tabularnewline
 Ind.8 & 0.01001 & 99.99996 & 199.99997\tabularnewline
 Ind.9 & 0.01000 & 99.99999 & 199.99995\tabularnewline
 Ind.10 & 0.01001 & 99.99996 & 199.99996\tabularnewline
+. & & &\tabularnewline
+Load & 0.01 & 100.00 & 200.00\tabularnewline
+Standard.deviation & 8.8e-06 & 1.5e-05 & 1.7e-05\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{longtable}[]{@{}cc@{}}
-\caption{Repeatability test results. Units: {[}g{]}}\tabularnewline
-\toprule
-Load / g & Standard deviation / g\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-Load / g & Standard deviation / g\tabularnewline
-\midrule
-\endhead
-0.01 & 8.76e-06\tabularnewline
-100.00 & 1.49e-05\tabularnewline
-200.00 & 1.69e-05\tabularnewline
-\bottomrule
-\end{longtable}
+\(\hrulefill\)
 
-directory:
+\hypertarget{excentricity-test-results}{%
+\subsection{Excentricity test results}\label{excentricity-test-results}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(}\FunctionTok{getwd}\NormalTok{())}
-\end{Highlighting}
-\end{Shaded}
+\begin{minipage}{.3\textwidth}
+  \includegraphics[width = 3cm]{eccen.png}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
 
-\begin{verbatim}
-## [1] "/home/cris/Dropbox/2_masscor_shinyapp/Rmd_LaTeX"
-\end{verbatim}
+Table: Repeatability test data. Units: [g]
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{print}\NormalTok{(params}\SpecialCharTok{$}\NormalTok{logoBolean)}
-\end{Highlighting}
-\end{Shaded}
+                      Load No. 1 / g   Load No. 2 / g   Load No. 3 / g
+-------------------  ---------------  ---------------  ---------------
+Ind.1                        0.00999         99.99997        199.99995
+Ind.2                        0.00999        100.00001        200.00000
+Ind.3                        0.00999         99.99998        199.99998
+Ind.4                        0.01000         99.99998        199.99999
+Ind.5                        0.01001         99.99997        199.99996
+Ind.6                        0.01000         99.99998        199.99996
+Ind.7                        0.01001         99.99997        199.99996
+Ind.8                        0.01001         99.99996        199.99997
+Ind.9                        0.01000         99.99999        199.99995
+Ind.10                       0.01001         99.99996        199.99996
+.                                                                     
+Load                            0.01           100.00           200.00
+Standard.deviation           8.8e-06          1.5e-05          1.7e-05
 
-\begin{verbatim}
-## [1] "na"
-\end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{class}\NormalTok{(NAWIDCC)}
-\end{Highlighting}
-\end{Shaded}
+Table: Repeatability test data. Units: [g]
 
-\begin{verbatim}
-## [1] "calibCert"
-\end{verbatim}
+                      Load No. 1 / g   Load No. 2 / g   Load No. 3 / g
+-------------------  ---------------  ---------------  ---------------
+Ind.1                        0.00999         99.99997        199.99995
+Ind.2                        0.00999        100.00001        200.00000
+Ind.3                        0.00999         99.99998        199.99998
+Ind.4                        0.01000         99.99998        199.99999
+Ind.5                        0.01001         99.99997        199.99996
+Ind.6                        0.01000         99.99998        199.99996
+Ind.7                        0.01001         99.99997        199.99996
+Ind.8                        0.01001         99.99996        199.99997
+Ind.9                        0.01000         99.99999        199.99995
+Ind.10                       0.01001         99.99996        199.99996
+.                                                                     
+Load                            0.01           100.00           200.00
+Standard.deviation           8.8e-06          1.5e-05          1.7e-05
+\end{minipage}
+
+\textbackslash end\{document\}
+
+\(\hrulefill\)
+
+\hypertarget{indication-error-test}{%
+\subsection{Indication error test}\label{indication-error-test}}
 
 \end{document}
