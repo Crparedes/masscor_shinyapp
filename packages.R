@@ -12,4 +12,4 @@ install.packages('shinyjs')
 install.packages('png')
 install.packages('knitr')
 install.packages('htmlwidgets')
-
+install.packages("shinycssloaders")

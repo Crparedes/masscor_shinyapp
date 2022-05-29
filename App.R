@@ -10,6 +10,7 @@ library(ggplot2) #Grammar of graphics
 library(ggfortify)
 library(writexl)
 library(rhandsontable)
+library(shinycssloaders)
 # library(data.table)
 library(masscor)
 library(png)

@@ -172,7 +172,7 @@ manageDCC.UI <- function(id) {
         uiOutput(ns('downloadPDF1'))
       ),
       tags$hr(),
-      uiOutput(ns('pff'))
+      withSpinner(uiOutput(ns('pff')), type = 6, color = "#2c3e50")
       #tags$hr(),
       #verbatimTextOutput(ns('primitive'))
       )

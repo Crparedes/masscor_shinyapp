@@ -247,8 +247,7 @@ manageDCC.Server <- function(input, output, session) {
                    date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
     rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.pdf', params = params, quiet = TRUE, envir = globalenv())
     
-    return(tags$iframe(style = "height:800px; width:100%; scrolling=yes",
-                       src = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), 'Human_Readable_CC.pdf')))})
+    return(tags$iframe(style = "height:800px; width:100%; scrolling=yes", src = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), 'Human_Readable_CC.pdf')))})
   
 
   output$downloadDCC1 <- renderUI(downloadDCC1())
