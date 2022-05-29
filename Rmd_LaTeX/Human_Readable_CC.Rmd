@@ -24,7 +24,10 @@ header-includes:
     \usepackage{titling}
     \usepackage{booktabs}
     \usepackage{multicol}
+    \usepackage{caption}
     \setlength{\belowcaptionskip}{0pt plus 1pt minus 1pt}
+    \usepackage{hyperref}
+    \hypersetup{urlcolor = cyan}
 ---
 
 ```{r setup, include = FALSE}
@@ -34,8 +37,11 @@ library(masscor)
 library(xtable)
 library(knitr)
 
- # NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
- NAWIDCC <- params$NAWIDCC
+  NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
+ # NAWIDCC <- params$NAWIDCC
+ LinkMasscor <- 'http://186.155.29.169:3838/masscor/'
+
+ FRMT <- function(x) {format(x, scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1])))))}
 
 ```
 
@@ -86,19 +92,19 @@ $~$
 
 $\hrulefill$
 
-\begin{flushright}\texttt{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}\end{flushright}
+\begin{flushright}
+  \texttt{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}
+  
+  \texttt{\url{`r LinkMasscor`}}
+\end{flushright}
 
 \clearpage
 
 ## Repeatability test results
 
 ```{r, echo = FALSE}
-kable(rbind(t(apply(NAWIDCC$add.info$CompleteRepeatability, MARGIN = 2, 
-                    function(x) format(x, scientific = FALSE, 
-                                       nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1]))))))),
-            '.' = rep('', nrow(NAWIDCC$add.info$CompleteRepeatability)),
-            Load = format(NAWIDCC$rep$V1, scientific = FALSE, digits = 4),
-            'Standard.deviation' = signif(NAWIDCC$rep$V2, 2)),
+kable(rbind(t(apply(NAWIDCC$add.info$CompleteRepeatability, MARGIN = 2, FRMT)), '.' = rep('', nrow(NAWIDCC$add.info$CompleteRepeatability)),
+            Load = format(NAWIDCC$rep$V1, scientific = FALSE, digits = 4), 'Standard.deviation' = signif(NAWIDCC$rep$V2, 2)),
       format = "simple", caption = paste0('Repeatability test data. Units: [', NAWIDCC$orgRepUnits[1], ']'), align = 'r',
       col.names = paste(rownames(NAWIDCC$add.info$CompleteRepeatability), '/', NAWIDCC$orgRepUnits[1], sep = ' '), booktabs = TRUE)
 ```
@@ -109,35 +115,49 @@ $\hrulefill$
 \begin{minipage}{.3\textwidth}
   \includegraphics[width = 3cm]{eccen.png}
 \end{minipage}
-\begin{minipage}{.5\textwidth}
-```{r, echo = FALSE, results = "asis"}
-make_outputs <- function() {
-  print(kable(rbind(t(apply(NAWIDCC$add.info$CompleteRepeatability, MARGIN = 2, 
-                    function(x) format(x, scientific = FALSE, 
-                                       nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1]))))))),
-            '.' = rep('', nrow(NAWIDCC$add.info$CompleteRepeatability)),
-            Load = format(NAWIDCC$rep$V1, scientific = FALSE, digits = 4),
-            'Standard.deviation' = signif(NAWIDCC$rep$V2, 2)),
-      format = "simple", caption = paste0('Repeatability test data. Units: [', NAWIDCC$orgRepUnits[1], ']'), align = 'r',
-      col.names = paste(rownames(NAWIDCC$add.info$CompleteRepeatability), '/', NAWIDCC$orgRepUnits[1], sep = ' '), booktabs = TRUE))
-  #plot(mtcars$mpg, mtcars$cyl)
-  print(kable(rbind(t(apply(NAWIDCC$add.info$CompleteRepeatability, MARGIN = 2, 
-                    function(x) format(x, scientific = FALSE, 
-                                       nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1]))))))),
-            '.' = rep('', nrow(NAWIDCC$add.info$CompleteRepeatability)),
-            Load = format(NAWIDCC$rep$V1, scientific = FALSE, digits = 4),
-            'Standard.deviation' = signif(NAWIDCC$rep$V2, 2)),
-      format = "simple", caption = paste0('Repeatability test data. Units: [', NAWIDCC$orgRepUnits[1], ']'), align = 'r',
-      col.names = paste(rownames(NAWIDCC$add.info$CompleteRepeatability), '/', NAWIDCC$orgRepUnits[1], sep = ' '), booktabs = TRUE))
-  }
-
-make_outputs()
-
-```
+\begin{minipage}{.5\textwidth} 
+    \captionof{table}{Eccentricity test results}
+    \begin{tabular}{c r r}\toprule
+    \textbf{Position} & \textbf{Indication / `r NAWIDCC$orgEccenUnits[1]`} & \textbf{Difference / `r NAWIDCC$orgEccenUnits[1]`}\\\midrule
+    1 (Central position) & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][1])` & -\\
+    2 & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][2])` & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][2] - NAWIDCC$add.info$CompleteEccentricity[[1]][1])`\\
+    3 & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][3])` & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][3] - NAWIDCC$add.info$CompleteEccentricity[[1]][1])`\\
+    4 & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][4])` & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][4] - NAWIDCC$add.info$CompleteEccentricity[[1]][1])`\\
+    5 & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][5])` & `r FRMT(NAWIDCC$add.info$CompleteEccentricity[[1]][5] - NAWIDCC$add.info$CompleteEccentricity[[1]][1])`\\\midrule
+    \multicolumn{2}{c}{\textbf{Maximum difference}}&`r FRMT(NAWIDCC$eccen[2])`\\\bottomrule
+    \end{tabular}
 \end{minipage}
-\end{document}
 
+$~$
 
 $\hrulefill$
 
+\clearpage
 ## Indication error test
+```{r, echo = FALSE, out.width = "100%", fig.width = 10, fig.height = 3, fig.cap = "Indication error plot for the NAWI."}
+  par(mar = c(4, 4, 0.1, 0.1))  
+  plot(NAWIDCC, cex = 0.5)
+```
+```{r, echo = FALSE}
+kable(cbind(Load = NAWIDCC$indError[, 1], 
+            Error = format(convertMassUnitsSI(NAWIDCC$indError[, 2], from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[2]),
+                           scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[2]))))),
+            Uncertainty = format(convertMassUnitsSI(NAWIDCC$indError[, 3], from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[3]),
+                           scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[3])))))),
+      format = "simple", caption = 'Indication error test results', align = 'r',
+      col.names = paste0(c('Load / ', 'Error / ', 'Uncertainty / '), NAWIDCC$orgIndErrorUnits), booktabs = TRUE)
+```
+Uncertainties correspond to `r ifelse(NAWIDCC$k == 1, 'standard', paste0('expanded'))`
+
+$\hrulefill$
+
+\clearpage
+
+## Comments section
+`r NAWIDCC$add.info$Comments$Com1`\vspace{2ex}
+
+`r NAWIDCC$add.info$Comments$Com2`\vspace{3ex}
+
+`r NAWIDCC$add.info$Comments$Com3`
+
+`r NAWIDCC$add.info$Comments$Com4`

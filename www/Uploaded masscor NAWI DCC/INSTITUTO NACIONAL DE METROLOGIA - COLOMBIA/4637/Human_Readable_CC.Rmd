@@ -25,6 +25,8 @@ header-includes:
     \usepackage{booktabs}
     \usepackage{multicol}
     \setlength{\belowcaptionskip}{0pt plus 1pt minus 1pt}
+    \usepackage{hyperref}
+    \hypersetup{urlcolor = cyan}
 ---
 
 ```{r setup, include = FALSE}
@@ -36,6 +38,8 @@ library(knitr)
 
  # NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
  NAWIDCC <- params$NAWIDCC
+ LinkMasscor <- 'http://186.155.29.169:3838/masscor/'
+
 
 ```
 
@@ -86,7 +90,11 @@ $~$
 
 $\hrulefill$
 
-\begin{flushright}\texttt{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}\end{flushright}
+\begin{flushright}
+  \texttt{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}
+  
+  \texttt{\url{`r LinkMasscor`}}
+\end{flushright}
 
 \clearpage
 
