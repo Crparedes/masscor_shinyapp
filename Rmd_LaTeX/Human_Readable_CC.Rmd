@@ -37,8 +37,8 @@ library(masscor)
 library(xtable)
 library(knitr)
 
-  NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
- # NAWIDCC <- params$NAWIDCC
+ # Este archivo es para desarrollo del template: NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
+  NAWIDCC <- params$NAWIDCC
  LinkMasscor <- 'http://186.155.29.169:3838/masscor/'
 
  FRMT <- function(x) {format(x, scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1])))))}
@@ -137,17 +137,20 @@ $\hrulefill$
 ```{r, echo = FALSE, out.width = "100%", fig.width = 10, fig.height = 3, fig.cap = "Indication error plot for the NAWI."}
   par(mar = c(4, 4, 0.1, 0.1))  
   plot(NAWIDCC, cex = 0.5)
+  uncertStatement <- paste0('Uncertainties are ', ifelse(NAWIDCC$k == 1, 'standard.', paste0('expanded, with a coverage factor of ', NAWIDCC$k)), '.')
 ```
+
 ```{r, echo = FALSE}
 kable(cbind(Load = NAWIDCC$indError[, 1], 
             Error = format(convertMassUnitsSI(NAWIDCC$indError[, 2], from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[2]),
                            scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[2]))))),
-            Uncertainty = format(convertMassUnitsSI(NAWIDCC$indError[, 3], from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[3]),
+            Uncertainty = format(convertMassUnitsSI(NAWIDCC$indError[, 4], from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[3]),
                            scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgIndErrorUnits[3])))))),
       format = "simple", caption = 'Indication error test results', align = 'r',
       col.names = paste0(c('Load / ', 'Error / ', 'Uncertainty / '), NAWIDCC$orgIndErrorUnits), booktabs = TRUE)
 ```
-Uncertainties correspond to `r ifelse(NAWIDCC$k == 1, 'standard', paste0('expanded'))`
+
+`r uncertStatement`
 
 $\hrulefill$
 
