@@ -152,7 +152,6 @@ manageDCC.Server <- function(input, output, session) {
 
   # DCC creation
   { 
-    
     logo <- reactive(readPNG(source = input$InstitutLogo$datapath))
     add.info <- reactive(list(
       masscorAppVersion = masscorAppVersion,
@@ -190,16 +189,32 @@ manageDCC.Server <- function(input, output, session) {
   }
   
   # Create directory for every new institution
+  tmp <- reactive(tempdir())
   FolderInstitution <- reactive(strsplit(x = NAWIDCC()$institution, split = ',')[[1]][1])
   subfldr <- reactive(NAWIDCC()$add.info$CertificateNumber)
   observe({
-    if(!dir.exists(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))) {
-      dir.create(path = paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))
+    if(!dir.exists(file.path(tmp(), FolderInstitution()))) {
+      dir.create(path = file.path(tmp(), FolderInstitution()))
     }
   })
   #
-  LclDirectory <- reactive(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution(), '/', subfldr()))
-  observe(dir.create(path = LclDirectory()))
+  LclDirectory <- reactive(file.path(tmp(), FolderInstitution(), subfldr()))
+  observe({
+    dir.create(path = LclDirectory())
+    addResourcePath(prefix = 'Human', directoryPath = LclDirectory())
+    })
+  
+  
+  # FolderInstitution <- reactive(strsplit(x = NAWIDCC()$institution, split = ',')[[1]][1])
+  # subfldr <- reactive(NAWIDCC()$add.info$CertificateNumber)
+  # observe({
+  #   if(!dir.exists(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))) {
+  #     dir.create(path = paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution()))
+  #   }
+  # })
+  # #
+  # LclDirectory <- reactive(paste0('www/Uploaded masscor NAWI DCC/', FolderInstitution(), '/', subfldr()))
+  # observe(dir.create(path = LclDirectory()))
    
   
     
@@ -213,7 +228,6 @@ manageDCC.Server <- function(input, output, session) {
   
   # Save copy
   observe({
-    #file.copy(from = 'Rmd_LaTeX/header.tex', to = 'www/Uploaded masscor NAWI DCC/header.tex', overwrite = TRUE)
     saveRDS(NAWIDCC(), file = file.path(LclDirectory(), "NAWIDCC.rds"))
   })
   
@@ -223,11 +237,13 @@ manageDCC.Server <- function(input, output, session) {
   downloadPDF1 <- eventReactive(
     eventExpr = NAWI.DCC.Completed(), ignoreInit = TRUE,
     tags$div(
-      a(href = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.pdf"), 
+      a(href = file.path('Human', "Human_Readable_CC.pdf"),
+          #file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.pdf"), 
         actionButton(icon = icon('download'), session$ns('DwnlPDFFile1'), 'Download human readable output (.pdf)',  style = "width:95%;"),
         download = NA, target = "_blank"),
       tags$br(), tags$br(),
-      a(href = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.tex"), 
+      a(href = file.path('Human', "Human_Readable_CC.tex"),
+        #file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.tex"), 
         actionButton(icon = icon('download'), session$ns('DwnlTexFile1'), 'Download LaTeX file (.tex)',  style = "width:95%;"),
         download = NA, target = "_blank")))
   
@@ -245,9 +261,10 @@ manageDCC.Server <- function(input, output, session) {
     params <- list(author = strsplit(x = NAWIDCC$institution, split = ',')[[1]][1],
                    address = strsplit(x = NAWIDCC$institution, split = ',')[[1]][2],
                    date = NAWIDCC$date, NAWIDCC = NAWIDCC, logoBolean = logoBolean())
-    rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.pdf', params = params, quiet = TRUE, envir = globalenv())
+    rmarkdown::render(tempReport, output_file = 'Human_Readable_CC.pdf', params = params, quiet = TRUE, envir = new.env(globalenv()))
     
-    return(tags$iframe(style = "height:800px; width:100%; scrolling=yes", src = file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), 'Human_Readable_CC.pdf')))})
+    return(tags$iframe(style = "height:800px; width:100%; scrolling=yes", src = file.path('Human', "Human_Readable_CC.pdf")))})
+                         #file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), 'Human_Readable_CC.pdf')))})
   
 
   output$downloadDCC1 <- renderUI(downloadDCC1())
