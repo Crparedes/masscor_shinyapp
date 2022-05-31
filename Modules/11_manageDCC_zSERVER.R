@@ -8,7 +8,8 @@ manageDCC.Server <- function(input, output, session) {
   BoleanIncompleteAdminDat <- reactive(# FALSE)
     are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
   BoleanIncompleteMeasurRes <- reactive(# FALSE)
-    are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$Temp1, input$bPres1, input$rHumi1)))
+    are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$traceability, 
+                     input$classSTD, input$Temp1, input$bPres1, input$rHumi1)))
   
   observeEvent(input$Go2MeasRes, ignoreInit = TRUE,
                if (BoleanIncompleteAdminDat()) {
@@ -40,7 +41,7 @@ manageDCC.Server <- function(input, output, session) {
   {
     frmtReap <- reactive(format(round(DummyNumber, digits = abs(floor(log10(convertMassUnitsSI(input$d, from = input$d.units, to = input$rep.units))))))[1])
     RepeatTableSize <- reactive(c(input$ReapTestPoints, input$ReapTestMeaPerPoints))
-    DF.repeatability <- reactive(data.frame(matrix(nrow = EnsureMinValue(RepeatTableSize()[1], 1), ncol = EnsureMinValue(RepeatTableSize()[2], 5), 
+    DF.repeatability <- reactive(data.frame(matrix(nrow = EnsureMinValue(RepeatTableSize()[1], 2), ncol = EnsureMinValue(RepeatTableSize()[2], 5), 
                                                    dimnames = list(paste0('Load No. ', 1:EnsureMinValue(RepeatTableSize()[1], 1)),
                                                                    paste0('Ind.', 1:EnsureMinValue(RepeatTableSize()[2], 5))))))
 

@@ -39,7 +39,9 @@ library(knitr)
 
  # Este archivo es para desarrollo del template: NAWIDCC <- readRDS('../ExampleFiles/DCC_NAWI_Balanza Mettler Toledo XPE 205_B743848411 _ AF-07090_2020-07-16.rds')
   NAWIDCC <- params$NAWIDCC
- LinkMasscor <- 'http://186.155.29.169:3838/masscor/'
+  LinkMasscor <- 'https://crparedes.shinyapps.io/masscor/'
+  LinkRepo <- 'https://github.com/Crparedes/masscor_shinyapp'
+  LinkCRAN <- 'https://CRAN.R-project.org/package=masscor'
 
  FRMT <- function(x) {format(x, scientific = FALSE, nsmall = abs(floor(log10(convertMassUnitsSI(NAWIDCC$d, from = NAWIDCC$standardUnits, to = NAWIDCC$orgRepUnits[1])))))}
 
@@ -93,9 +95,14 @@ $~$
 $\hrulefill$
 
 \begin{flushright}
-  \texttt{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}
+  \textit{masscor App Version: `r NAWIDCC$add.info$masscorAppVersion`}\\
+  \texttt{\url{`r LinkMasscor`}}\vfill
   
-  \texttt{\url{`r LinkMasscor`}}
+  {\footnotesize
+    \begin{tabular}{@{}rl@{}}\toprule
+    \textit{GitHub repository of the masscor Web App:}&\texttt{\url{`r LinkRepo`}}\\
+    \textit{CRAN index page of the masscor package:}&\texttt{\url{`r LinkCRAN`}}\\
+    \end{tabular}}
 \end{flushright}
 
 \clearpage
@@ -138,6 +145,7 @@ $\hrulefill$
   par(mar = c(4, 4, 0.1, 0.1))  
   plot(NAWIDCC, cex = 0.5)
   uncertStatement <- paste0('Uncertainties are ', ifelse(NAWIDCC$k == 1, 'standard.', paste0('expanded, with a coverage factor of ', NAWIDCC$k)), '.')
+  traceaStatement <- paste0('Calibration was performed using standard weights class ', NAWIDCC$classSTD, ', with calibration certificate ', NAWIDCC$traceability, '.')
 ```
 
 ```{r, echo = FALSE}
@@ -151,6 +159,8 @@ kable(cbind(Load = NAWIDCC$indError[, 1],
 ```
 
 `r uncertStatement`
+
+`r traceaStatement`
 
 $\hrulefill$
 
