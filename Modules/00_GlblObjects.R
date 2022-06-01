@@ -25,8 +25,12 @@ title <- tags$div(HTML(
 Information <- h5(
   "This interactive web application was developed in the framework of a project financially supported by the Ministerio de Ciencia, 
   Tecnología e Innovación de Colombia", tags$a(href = "https://minciencias.gov.co/", "(MinCiencias)", target = "_blank"), "under project number 9932100271370.", tags$br(),
+  "Important knowledge transfer from the the expert Coaches of the ", 
+  tags$a(href = "https://sim-metrologia.org/2021/09/13/workshop-for-launching-the-implementation-of-new-nmi-services-related-to-digital-transformation-idb-project/",
+         "SIM-PTB-IDB joint project CABUREK-SIM-M4DT", target = "_blank"), 
+  " heavily inspired this work and are deeply acknowledged.", tags$br(),
   "The work was presented at the ", tags$a(href = "https://URL.sin.asignar/", "XXX XXXX Anual Conference on XXXXX XXXX (20XX)", target = "_blank"),
-  "by", tags$a(href = "https://www.researchgate.net/profile/Cristhian-Paredes-2", "Cristhian Paredes.", target = "_blank"))
+  "by chemist", tags$a(href = "https://www.researchgate.net/profile/Cristhian-Paredes-2", "Cristhian Paredes.", target = "_blank"))
   
 
 errorBoxNoNAWIDCC <- tags$div(

@@ -30,7 +30,10 @@ homeMasscor.UI <- function(id) {
         tags$br(), tags$br(),
         h5("This Web Application was made in the free software environment for statistical computing and graphics ", tags$a(href = "https://www.r-project.org/", "R", target = "_blank"), ", using the package",
            tags$a(href = "https://shiny.rstudio.com/", "Shiny,", target = "_blank"), "designed to build interactive web apps with R.", tags$br(), "A valuable introduction to R programming can be found from", 
-           tags$a(href = "https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "Venables and Smith (2022).", target = "_blank"))
+           tags$a(href = "https://cran.r-project.org/doc/manuals/r-release/R-intro.pdf", "Venables and Smith (2022).", target = "_blank")),
+    tags$br(), tags$br(),
+    h4(em('masscor App Version: 0.1.12'), class = 'rightAlign')
+    
       ),
       column(width = 4, div(img(src = "E2_2kg.jpg", width = '85%'), style = "text-align: center;"), tags$br(), tags$br()))
 }

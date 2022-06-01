@@ -49,8 +49,8 @@ headTags2 <- tags$li(
       type = "text/css", 
       ".navbar2
       .navbar {
-        height: 60px;
-        min-height: 60px !important;
+        height: 70px;
+        min-height: 70px !important;
       }
       .navbar2.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
         color: #dddddd;
