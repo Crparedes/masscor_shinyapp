@@ -32,7 +32,9 @@ conventionalMass.UI <- function(id) {
              htmlOutput(ns('ConvMassText')), tags$br(),
              downloadButton(ns('DwnlConvMassResCSV'), 'Download measurement results (CSV)'), tags$br(), tags$br(),
              downloadButton(ns('DwnlConvMassResXLS'), 'Download measurement results (XLSX)'))
-    )
+    ),
+    tags$hr(), tags$br(), niceSeparator()
+    
     
     )
 }

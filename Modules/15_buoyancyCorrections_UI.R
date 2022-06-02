@@ -67,7 +67,7 @@ buoyancyCorrections.UI <- function(id) {
       )
     ),
   
-    niceSeparator(), niceSeparator(),
+    tags$br(), tags$br(), niceSeparator(), #niceSeparator(),
     
     # h4(tags$b('Instructions to calculate (real) masses')), uiOutput(ns('noDCC.loaded')),
     # 

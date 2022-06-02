@@ -7,9 +7,9 @@ manageDCC.UI <- function(id) {
     # actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     tags$div(id = "inline", 
              radioButtons(ns('SourceOption'), label = 'Which action will you perform?',
-                          choices = list('Create new masscor NAWI DCC' = 'daCapo', "Upload a masscor NAWI DCC" = 'file'),
-                          selected = 'daCapo', inline = TRUE)),
-    tags$hr(),
+                          choices = list('Create new masscor NAWI DCC' = 'daCapo', "Upload a masscor NAWI DCC file" = 'file'),
+                          selected = character(0), inline = TRUE)),
+    niceSeparator(),
       
     fluidRow(column(
       6,
@@ -55,6 +55,8 @@ manageDCC.UI <- function(id) {
                 h5(tags$b('NAWI certificate information:')),
                 textInput(inputId = ns('certificate'), label = ReqField('Certificate number'), width = '100%'),
                 dateInput(inputId = ns('date'), label = ReqField('Calibration date'), width = '100%'),
+              h5(tags$b('Calibration costumer:')),
+                textInput(inputId = ns('Costumer'), label = ReqField('Costumer name and address'), width = '100%', placeholder = 'Name, address.'),
                 textInput(inputId = ns('calPlace'), label = ReqField('Place of calibration'), width = '100%'),
                 # Datos del personal responsable
                 # lugar de calibraci'on
@@ -165,18 +167,20 @@ manageDCC.UI <- function(id) {
     ),
     column(
       6,
-      h4('Human-readable document preview:'), 
-      #tags$b(''),
-      splitLayout(
-        conditionalPanel(condition = 'input.SourceOption == "daCapo"', ns = ns, uiOutput(ns('downloadDCC1'))),
-        uiOutput(ns('downloadPDF1'))
-      ),
-      tags$hr(),
-      withSpinner(uiOutput(ns('pff')), type = 6, color = "#2c3e50")
-      #tags$hr(),
-      #verbatimTextOutput(ns('primitive'))
-      )
+      conditionalPanel(
+        condition = 'input.SourceOption == "daCapo" || input.SourceOption == "file"', ns = ns,
+        h4('Human-readable document preview:'), 
+        #tags$b(''),
+        splitLayout(
+          conditionalPanel(condition = 'input.SourceOption == "daCapo"', ns = ns, uiOutput(ns('downloadDCC1'))),
+          uiOutput(ns('downloadPDF1'))
+        ),
+        tags$hr(),
+        withSpinner(uiOutput(ns('pff')), type = 6, color = "#2c3e50")
+        #tags$hr(),
+        #verbatimTextOutput(ns('primitive'))
+      ))
     ),
-    tags$hr(), niceSeparator()
+    tags$hr(), tags$br(), niceSeparator()
   )
 }

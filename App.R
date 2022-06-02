@@ -27,8 +27,9 @@ sapply(c(modules), source)
 ui <- fluidPage(
   withMathJax(),
   useShinyjs(),
-  div(class = "navbar2", 
-      navbarPage(windowTitle = 'masscor Graphical User Interface', title = Information, position = 'fixed-bottom', theme = shinytheme("flatly"))),
+  conditionalPanel(condition = "input.MainNavTabs == 'Home'",
+                   div(class = "navbar2", 
+                       navbarPage(windowTitle = 'masscor Graphical User Interface', title = Information, position = 'fixed-bottom', theme = shinytheme("flatly")))),
   navbarPage(
     title = title, windowTitle = 'masscor Graphical User Interface', id = 'MainNavTabs',# selected = 'Home',
     theme = shinytheme("flatly"), position = 'fixed-top', collapsible = TRUE, lang = 'en',
@@ -41,7 +42,7 @@ ui <- fluidPage(
     tabPanel(title = HTML('Conventional <br>', spcs(7), 'mass correction'), icon = icon('ethernet'), 
              tags$hr(), tags$hr(), conventionalMass.UI(id = 'conventionalMass')),
     tabPanel(title = HTML('Air buoyancy <br>', spcs(6), 'correction factors'), icon = icon('leaf'), tags$hr(), tags$hr(), buoyancyCorrections.UI(id = 'MABC')),
-    headTags1, headTags2, headTags3 # mainly css code
+    tags$div(headTags1, headTags2, headTags3, style = 'display: none') # mainly css code
   )
 )
 

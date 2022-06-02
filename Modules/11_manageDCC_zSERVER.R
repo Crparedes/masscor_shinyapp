@@ -6,7 +6,7 @@ manageDCC.Server <- function(input, output, session) {
   ## Navigation between tabs
   {
   BoleanIncompleteAdminDat <- reactive(# FALSE)
-    are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$calPlace)))
+    are.null.empty(c(input$institution, input$respPerson, input$balanceID, input$serial, input$certificate, input$date, input$Costumer, input$calPlace)))
   BoleanIncompleteMeasurRes <- reactive(# FALSE)
     are.null.empty(c(input$d, HOT2R(input$HT.repeatability), HOT2R(input$HT.eccen), HOT2R(input$HT.indicationError), input$traceability, 
                      input$classSTD, input$Temp1, input$bPres1, input$rHumi1)))
@@ -158,6 +158,7 @@ manageDCC.Server <- function(input, output, session) {
       masscorAppVersion = masscorAppVersion,
       Logo = tryCatch(logo(), error = function(x) return(FALSE)),
       ResponsiblePerson = input$respPerson,
+      Costumer = input$Costumer,
       CalibrationPlace = input$calPlace,
       CompleteRepeatability = HOT2R(input$HT.repeatability),
       CompleteEccentricity = HOT2R(input$HT.eccen),
@@ -241,11 +242,6 @@ manageDCC.Server <- function(input, output, session) {
       a(href = file.path('Human', "Human_Readable_CC.pdf"),
           #file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.pdf"), 
         actionButton(icon = icon('download'), session$ns('DwnlPDFFile1'), 'Download human readable output (.pdf)',  style = "width:95%;"),
-        download = NA, target = "_blank"),
-      tags$br(), tags$br(),
-      a(href = file.path('Human', "Human_Readable_CC.tex"),
-        #file.path('Uploaded masscor NAWI DCC/', FolderInstitution(), subfldr(), "Human_Readable_CC.tex"), 
-        actionButton(icon = icon('download'), session$ns('DwnlTexFile1'), 'Download LaTeX file (.tex)',  style = "width:95%;"),
         download = NA, target = "_blank")))
   
   
