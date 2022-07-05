@@ -39,7 +39,8 @@ buoyancyCorrections.Server <- function(input, output, session, NAWIDCC) {
     }
     if (!is.null(DT)) {
       rhandsontable(DT, readOnly = FALSE, fillHandle = list(direction = 'vertical', autoInsertRow = TRUE)) %>% 
-        hot_col(col = 1:2, type = 'numeric', format = '0.0000') %>% 
+        hot_col(col = 1, type = 'numeric', format = '0.000') %>% 
+        hot_col(col = 2, type = 'numeric', format = '0.0000') %>% 
         hot_validate_numeric(col = 1:2, min = 0, allowInvalid = FALSE) %>%
         hot_table(highlightCol = TRUE, highlightRow = TRUE) %>%
         hot_context_menu(

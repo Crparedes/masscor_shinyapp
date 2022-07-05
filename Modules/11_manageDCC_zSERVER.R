@@ -42,7 +42,7 @@ manageDCC.Server <- function(input, output, session) {
     frmtReap <- reactive(format(round(DummyNumber, digits = abs(floor(log10(convertMassUnitsSI(input$d, from = input$d.units, to = input$rep.units))))))[1])
     RepeatTableSize <- reactive(c(input$ReapTestPoints, input$ReapTestMeaPerPoints))
     DF.repeatability <- reactive(data.frame(matrix(nrow = EnsureMinValue(RepeatTableSize()[1], 2), ncol = EnsureMinValue(RepeatTableSize()[2], 5), 
-                                                   dimnames = list(paste0('Load No. ', 1:EnsureMinValue(RepeatTableSize()[1], 1)),
+                                                   dimnames = list(paste0('Load No. ', 1:EnsureMinValue(RepeatTableSize()[1], 2)),
                                                                    paste0('Ind.', 1:EnsureMinValue(RepeatTableSize()[2], 5))))))
 
     observe({
