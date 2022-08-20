@@ -22,15 +22,23 @@ title <- tags$div(HTML(
   </h3></th></tr>
   </table>'))
 
-Information <- h5(
-  "This interactive web application was developed in the framework of a project financially supported by the Ministerio de Ciencia, 
-  Tecnología e Innovación de Colombia", tags$a(href = "https://minciencias.gov.co/", "(MinCiencias)", target = "_blank"), "under project number 9932100271370.", tags$br(),
-  "The valuable knowledge transfer from the expert Coaches of the SIM-PTB-IDB joint project", 
-  tags$a(href = "https://sim-metrologia.org/2021/09/13/workshop-for-launching-the-implementation-of-new-nmi-services-related-to-digital-transformation-idb-project/",
-         "CABUREK-SIM-M4DT", target = "_blank"), 
-  "notably inspired this implementation. Their help is greatly acknowledged.", tags$br(),
-  "The work was presented at the ", tags$a(href = "https://URL.sin.asignar/", "XXX XXXX Anual Conference on XXXXX XXXX (20XX)", target = "_blank"),
-  "by chemist", tags$a(href = "https://www.researchgate.net/profile/Cristhian-Paredes-2", "Cristhian Paredes.", target = "_blank"))
+Information <- tags$div(
+  h6(
+    #style = "a{color: #18bc9c; font-weight: bold}",
+    "This interactive web application was developed in the framework of a project financially supported by the Ministerio de Ciencia, 
+    Tecnología e Innovación de Colombia", 
+    tags$a(href = "https://minciencias.gov.co/", "(MinCiencias)", style = "color: #18bc9c; font-weight: bold", target = "_blank"), 
+    "under project number 9932100271370.", tags$br(),
+    "The work was presented at the ", 
+    tags$a(href = "https://ncsli.org/mpage/ws_2022/", "NCSL International Workshop & Symposium", style = 
+             "color: #18bc9c; font-weight: bold", target = "_blank"),
+    "(2022, Grapevine, Texas USA) by chemist", tags$a(href = "https://www.researchgate.net/profile/Cristhian-Paredes-2", 
+                         "Cristhian Paredes.", style = "color: #18bc9c; font-weight: bold", target = "_blank"), 
+    tags$br(),
+    "The valuable knowledge transfer from the expert Coaches of the SIM-PTB-IDB joint project", 
+    tags$a(href = "https://sim-metrologia.org/2021/09/13/workshop-for-launching-the-implementation-of-new-nmi-services-related-to-digital-transformation-idb-project/",
+           "CABUREK-SIM-M4DT", target = "_blank", style = "color: #18bc9c; font-weight: bold"), 
+    "notably inspired this implementation. Their help is greatly acknowledged."))
   
 
 errorBoxNoNAWIDCC <- tags$div(
