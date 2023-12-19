@@ -44,7 +44,7 @@ conventionalMass.Server <- function(input, output, session, NAWIDCC, parent, mai
   Indications <- reactive(HOT2R(input$Indications, IgnoreRowNames = TRUE))
   
   ConventionalMasses <- reactive({
-    if (is.na(Indications())) return(data.frame(matrix(nrow = 1, ncol = 2)))
+    if (is.na(Indications())[1]) return(data.frame(matrix(nrow = 1, ncol = 2)))
     
     Indications <- Indications()$Indication[!is.na(Indications()$Indication > 0)]
     if (length(Indications) == 0) return(data.frame(matrix(nrow = 1, ncol = 2)))

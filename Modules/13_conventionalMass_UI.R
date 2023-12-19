@@ -3,7 +3,7 @@ conventionalMass.UI <- function(id) {
   column( # Revisar https://www.oiml.org/en/files/pdf_d/d028-e04.pdf
     width = 10, offset = 1,
     h3(tags$b('Conventional value of the result of weighing in air using the masscor NAWI DCC')),
-    #actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
+    # actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     uiOutput(ns('noDCC.loaded')), tags$br(),
     fluidRow(
       column(

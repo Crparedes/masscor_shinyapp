@@ -5,9 +5,7 @@ account: crparedes
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6384557
-bundleId: 6221506
+bundleId: 8066930
 url: https://crparedes.shinyapps.io/masscor/
-when: 1661033182.67862
-lastSyncTime: 1661033182.67863
 asMultiple: FALSE
 asStatic: FALSE
