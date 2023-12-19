@@ -3,7 +3,10 @@ manageDCC.UI <- function(id) {
   column(
     width = 10, offset = 1,
     h3(tags$b('Digital Calibration Certificates for Non-Automatic Weighing Instruments with the R package masscor')),
-    h4('Create a new masscor NAWI DCC or upload a formely created one.'), tags$br(),
+    h4('Create a new masscor NAWI DCC or upload a formely created one.'),
+    tags$a(href = "NAWI_Example.rds", tags$b("(Download an example file to upload it to the App)"),
+           download = NA, target = "_blank"),
+    tags$br(),
     # actionButton(inputId = ns('brwzInsideModule'), label = tags$b('Browser() - inside module')), #Eliminar esta linea
     tags$div(id = "inline", 
              radioButtons(ns('SourceOption'), label = 'Which action will you perform?',
